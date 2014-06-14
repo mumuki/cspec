@@ -15,11 +15,18 @@
         };                                              \
         Local::                                         \
 
+    #define __f_agn(var, body)                          \
+        struct Local {                                  \
+            static void body;                           \
+        };                                              \
+        var = Local::function;                          \
+
     extern "C" {
 
 #else
 
     #define __function(body)                void body;
+    #define __f_agn(var, body)              void body; var = function;
 
 #endif
 
@@ -38,19 +45,33 @@
     int _cspec_get_result(void);
 
     #define describe(description, block) {                      \
+        static void(*__before)(void);                           \
+        static void(*__after)(void);                            \
+        { __f_agn(__before, function() {}); };                  \
+        { __f_agn(__after, function() {}); };                   \
         _cspec_describe_pre(description);                       \
         __function(block) function();                           \
         _cspec_describe_post(description);                      \
     }                                                           \
 
     #define it(description, block) {                            \
+        __before();                                             \
         _cspec_it_pre(description);                             \
         __function(block) function();                           \
         _cspec_it_post(description);                            \
+        __after();                                              \
     }                                                           \
 
     #define skip(description, block) {                          \
         _cspec_skip(description);                               \
+    }                                                           \
+
+    #define before(block) {                                     \
+        __f_agn(__before, block);                               \
+    }                                                           \
+
+    #define after(block) {                                      \
+        __f_agn(__after, block);                                \
     }                                                           \
 
     #define _should(boolean) {                                  \
