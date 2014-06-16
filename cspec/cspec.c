@@ -67,6 +67,10 @@ static int IT_FAILURES_SHULDS = 0;
         }
     }
 
+    void _cspec_should_power(const char* filename, int line, void* actual, int(*f)(void*, void*), void* expected) {
+        _cspec_should(f(actual, expected), filename, line);
+    }
+
     void _cspec_should(int boolean, const char* filename, int line) {
         if (boolean) {
             SUCCESS_SHOULDS++;
@@ -94,6 +98,18 @@ static int IT_FAILURES_SHULDS = 0;
         print_result("Failure", FAILURE);
         puts("");
         return FAILURE_SHOULDS;
+    }
+
+    int _cspec_should_is_equal(void* actual, void* expected) {
+        return actual == expected;
+    }
+
+    int _cspec_should_not_equal(void* actual, void* expected) {
+        return actual != expected;
+    }
+
+    int _cspec_should_string_equal(void* actual, void* expected) {
+        return strcmp((char*) actual,(char*) expected) == 0;
     }
 
 // ---------------------------------------------------------------------------

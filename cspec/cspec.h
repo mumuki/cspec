@@ -15,6 +15,13 @@
         };                                              \
         Local::                                         \
 
+    #define __lambda(ret, body) ({                      \
+        struct Local {                                  \
+            static ret _$ body;                         \
+        };                                              \
+        (void*)(Local::_$;)                             \
+    })                                                  \
+
     #define __f_agn(var, body)                          \
         struct Local {                                  \
             static void body;                           \
@@ -26,12 +33,13 @@
 #else
 
     #define __function(body)                void body;
+    #define __lambda(ret, body)             (void*)({ ret _$ body; _$; })
     #define __f_agn(var, body)              void body; var = function;
 
 #endif
 
     #include <string.h>
-    #include <string.h>
+    #include <stdlib.h>
 
     void _cspec_describe_pre(const char* description);
     void _cspec_describe_post(const char* description);
@@ -41,6 +49,11 @@
 
     void _cspec_skip(const char* description);
     void _cspec_should(int boolean, const char* filename, int line);
+    void _cspec_should_power(const char* filename, int line, void* actual, int(*f)(void*, void*), void* expected);
+
+    int _cspec_should_is_equal(void* actual, void* expected);
+    int _cspec_should_not_equal(void* actual, void* expected);
+    int _cspec_should_string_equal(void* actual, void* expected);
 
     int _cspec_get_result(void);
 
@@ -90,7 +103,18 @@
     #define should_be_equals_strings(expected, actual)      _should(strcmp(actual, expected) == 0)
     #define should_not_be_equals_strings(expected, actual)  _should(strcmp(actual, expected) != 0)
 
-    #define CSPEC_RESULT        _cspec_get_result();
+    #define should(actual)  _cspec_should_power(__FILE__, __LINE__, (void*)(actual),
+    #define be              _cspec_should_is_equal, (void*)
+    #define not_be          _cspec_should_not_equal, (void*)
+    #define be_string       _cspec_should_string_equal, (void*)
+
+    #define equal(expected) (expected))
+    #define null            (NULL))
+
+    #define truthy          (1))
+    #define falsely         (0))
+
+    #define CSPEC_RESULT    _cspec_get_result();
 
 #ifdef __cplusplus
     }
