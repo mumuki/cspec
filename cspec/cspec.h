@@ -112,7 +112,7 @@
     #define null            (NULL))
 
     #define truthy          (1))
-    #define falsely         (0))
+    #define falsey          (0))
 
     #define CSPEC_RESULT    _cspec_get_result();
 

@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 * In order
  1. **should**(value)
  2. **be / not_be / be_string**
- 3. **truthy / falsely / equal**(expected) **/ null**
+ 3. **truthy / falsey / equal**(expected) **/ null**
 
 ```c
 #include <cspec/cspec.h>
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
         char* world = "World";
 
         it("it 1", function () {
-            should(0) be falsely;
+            should(0) be falsey;
         });
 
         it("it 2", function () {
