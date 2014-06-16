@@ -55,6 +55,48 @@ int main(int argc, char **argv) {
 * **should_be_equals_strings**(expected, actual)
 * **should_not_be_equals_strings**(expected, actual)
 
+####Also, cspec provides a nicer interface for fluent expectation
+* In order
+ 1. **should**(value)
+ 2. **be / not_be / be_string**
+ 3. **truthy / falsely / equal**(expected) **/ null**
+
+```c
+#include <cspec/cspec.h>
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+    describe("describe 1", function () {
+
+        char* world = "World";
+
+        it("it 1", function () {
+            should(0) be falsely;
+        });
+
+        it("it 2", function () {
+            should(1) be truthy;
+        });
+
+        describe("describe 2", function () {
+
+            it("it 3", function () {
+                should(1) be equal(2);
+            });
+
+            it("it 4", function () {
+                should(world) be_string equal("World");
+            });
+
+        });
+
+    });
+
+    return CSPEC_RESULT;
+
+}
+```
 ###Cspec Report
 The last line in the example `return CSPEC_RESULT;` prints the report and return the exit code. Is very important that you don't forget to add this line.
 
