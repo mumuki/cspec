@@ -47,6 +47,13 @@ int main(int argc, char **argv) {
 * Run it, e.g. `./helloWorld`
 * Add more features!
 
+#### Help me, Eclipse shows error everywhere!
+Have you added cspec as a library? Probably not, so let me help you with that:
+
+* Right click on your project and choose `Properties`
+* Go to `C/C++ Build -> Settings -> Tool Settings -> GCC C++ Linker -> Libraries`
+* On the upper panel, `Libraries (-l)` press the add button and add `cspec`
+
 ### Usage
 
 #### Expectations functions
