@@ -1,4 +1,4 @@
-cspec - C/C++ specs por humans
+cspec - C/C++ specs for humans
 ==============================
 
 ### In a nutshell
