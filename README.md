@@ -1,22 +1,7 @@
-cspec
-=====
-###Little spec framework in C/C++
-#####- C/C++ specs por humans
+cspec - C/C++ specs for humans
+==============================
 
-###Why can I use cspec?
-It is a little famework for C which provides a DSL, like jasmine (javascript), to make C testing friendlier.
-
-###Install
-* Checkout this repo: `git checkout https://github.com/fedescarpa/cspec.git`
-* Enter into cspec folder: `cd cspec`
-* Build the project:`sudo make`
-* Install: `sudo make install`
-
-###Uninstall
-* Run: `sudo make clean uninstall`
-
-###How can I use it?
-It's very simple, let's see an example:
+### In a nutshell
 
 ```c
 #include <cspec/cspec.h>
@@ -35,9 +20,8 @@ int main(int argc, char **argv) {
 
 }
 ```
-* Compile it with `-lcspec`
-* Example: `gcc filename.(c|cpp) -o filename -lcspec`
-* Run the example `./filename`
+* `gcc numbers.c -o numbers -lcspec`
+* Run the example `./numbers`
 
 ```bash
   Numbers
@@ -45,21 +29,48 @@ int main(int argc, char **argv) {
 
   1 Success
 ```
-###Should expectations
-* **should_be_true**(boolen)
-* **should_be_false**(boolen)
-* **should_be_null**(pointer)
-* **should_not_be_null**(pointer)
-* **should_be_equals**(expected, actual)
-* **should_not_be_equals**(expected, actual)
-* **should_be_equals_strings**(expected, actual)
-* **should_not_be_equals_strings**(expected, actual)
 
-####Also, cspec provides a nicer interface for fluent expectation
+### Getting started
+
+#### How to install it?
+* Checkout this repo: `git checkout https://github.com/fedescarpa/cspec.git`
+* Enter into cspec folder: `cd cspec`
+* Build the project:`sudo make`
+* Install: `sudo make install`
+
+#### How to uninstall it?
+* Run: `sudo make clean uninstall`
+
+#### What's next?
+* Write some code and some tests
+* Compile your files using `-lcspec` to link the library, e.g. `gcc helloWorld.cpp -o helloWorld -lcspec`
+* Run it, e.g. `./helloWorld`
+* Add more features!
+
+#### Help me, Eclipse shows error everywhere!
+Have you added cspec as a library? Probably not, so let me help you with that:
+
+* Right click on your project and choose `Properties`
+* Go to `C/C++ Build -> Settings -> Tool Settings -> GCC C++ Linker -> Libraries`
+* On the upper panel, `Libraries (-l)` press the add button and add `cspec`
+
+### Usage
+
+#### Expectations functions
+* `should_be_true(boolean)`
+* `should_be_false(boolean)`
+* `should_be_null(pointer)`
+* `should_not_be_null(pointer)`
+* `should_be_equals(expected, actual)`
+* `should_not_be_equals(expected, actual)`
+* `should_be_equals_strings(expected, actual)`
+* `should_not_be_equals_strings(expected, actual)`
+
+#### Fluent DSLish expectations
 * In order
- 1. **should**(value)
- 2. **be / not_be / be_string**
- 3. **truthy / falsey / equal**(expected) **/ null**
+ 1. `should(value)`
+ 2. `be | not_be | be_string`
+ 3. `truthy | falsey | equal(expected) | null`
 
 ```c
 #include <cspec/cspec.h>
@@ -97,11 +108,11 @@ int main(int argc, char **argv) {
 
 }
 ```
-###Cspec Report
-The last line in the example `return CSPEC_RESULT;` prints the report and return the exit code. Is very important that you don't forget to add this line.
 
-###Hook methods
-* Each "describe" have its own hooks.
+**WARNING!** The last line in the example (`return CSPEC_RESULT;`) prints the report and returns the exit code. If you forget to add it, you won't see anything
+
+#### Hook methods (aka Setup / TearDown)
+Each "describe" have its own hooks.
 
 ```c
 #include <cspec/cspec.h>
@@ -148,7 +159,9 @@ int main(int argc, char **argv) {
 
 }
 ```
-It print the following report
+
+It prints the following report:
+
 
 ```
   describe 1
