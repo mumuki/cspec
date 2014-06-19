@@ -40,6 +40,7 @@ static int IT_FAILURES_SHULDS = 0;
 // ---------------------------------------------------------------------------
 
     char* get_spaces();
+    void _cspec_print_report();
 
 // ---------------------------------------------------------------------------
 // ----- "PUBLICS" -----
@@ -92,11 +93,7 @@ static int IT_FAILURES_SHULDS = 0;
     }                                                                                           \
 
     int _cspec_get_result(void) {
-        puts("");
-        print_result("Success", SUCCESS);
-        print_result("Pending", PENDING);
-        print_result("Failure", FAILURE);
-        puts("");
+        _cspec_print_report();
         return FAILURE_SHOULDS;
     }
 
@@ -123,3 +120,16 @@ static int IT_FAILURES_SHULDS = 0;
         spaces[spaces_count] = '\0';
         return spaces;
     }
+
+    void _cspec_print_report() {
+        puts("");
+        print_result("Success", SUCCESS);
+        print_result("Pending", PENDING);
+        print_result("Failure", FAILURE);
+        puts("");
+    }
+
+    int main(int argc, char **argv) {
+        return CSPEC_RESULT;
+    }
+

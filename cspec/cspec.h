@@ -41,6 +41,16 @@
     #include <string.h>
     #include <stdlib.h>
 
+    #ifndef DEFAULT_MAX_SUITES
+        #define DEFAULT_MAX_SUITES 1024
+    #endif
+
+    #define CSPEC(name, block)                                                          \
+        __attribute__ ((constructor))                                                   \
+        void _suite_name_##name(void) {                                                 \
+            __function(block); function();                                              \
+        }                                                                               \
+
     void _cspec_describe_pre(const char* description);
     void _cspec_describe_post(const char* description);
 
