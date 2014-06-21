@@ -61,9 +61,10 @@ static int IT_FAILURES_SHULDS = 0;
     }
 
     void _cspec_it_post(const char* description) {
-        if (IT_FAILURES_SHULDS) {
+        if (IT_FAILURES_SHULDS != 0) {
             print_description(description, "", "  ", FAILURE);
         } else {
+            SUCCESS_SHOULDS++;
             print_description(description, "", "  ", SUCCESS);
         }
     }
@@ -73,9 +74,7 @@ static int IT_FAILURES_SHULDS = 0;
     }
 
     void _cspec_should(int boolean, const char* filename, int line) {
-        if (boolean) {
-            SUCCESS_SHOULDS++;
-        } else {
+        if (IT_FAILURES_SHULDS == 0 && !boolean) {
             FAILURE_SHOULDS++;
             IT_FAILURES_SHULDS++;
         }
