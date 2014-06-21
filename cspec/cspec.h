@@ -59,11 +59,6 @@
 
     void _cspec_skip(const char* description);
     void _cspec_should(int boolean, const char* filename, int line);
-    void _cspec_should_power(const char* filename, int line, void* actual, int(*f)(void*, void*), void* expected);
-
-    int _cspec_should_is_equal(void* actual, void* expected);
-    int _cspec_should_not_equal(void* actual, void* expected);
-    int _cspec_should_string_equal(void* actual, void* expected);
 
     int _cspec_get_result(void);
 
@@ -113,18 +108,67 @@
     #define should_be_equals_strings(expected, actual)      _should(strcmp(actual, expected) == 0)
     #define should_not_be_equals_strings(expected, actual)  _should(strcmp(actual, expected) != 0)
 
-    #define should(actual)  _cspec_should_power(__FILE__, __LINE__, (void*)(actual),
-    #define be              _cspec_should_is_equal, (void*)
-    #define not_be          _cspec_should_not_equal, (void*)
-    #define be_string       _cspec_should_string_equal, (void*)
 
-    #define equal(expected) (expected))
-    #define null            (NULL))
+    // ---------------------------------------------------------------------------
+    // ----- DSL -----
+    // ---------------------------------------------------------------------------
 
-    #define truthy          (1))
-    #define falsey          (0))
+    #include <stdint.h>
 
-    #define CSPEC_RESULT    _cspec_get_result();
+    int _cspec_should_be();
+    int _cspec_should_not_be();
+
+    int _cspec_should_be_true();
+    int _cspec_should_be_false();
+    void* _cspec_should_be_null();
+
+    typedef int8_t  t_cbool;
+    typedef int8_t  t_cchar;
+    typedef int16_t t_cshort;
+    typedef int32_t t_cint;
+    typedef int64_t t_clong;
+    typedef double  t_cdouble;
+    typedef float   t_cfloat;
+    typedef char*   t_cstring;
+    typedef void*   t_cptr;
+
+    #define __should_type(type)                                                                             \
+        void _cspec_should_##type(char* file, int line, t_c##type actual, int negated, t_c##type expected);
+
+    #define __should_call(type, actual) \
+        _cspec_should_##type(__FILE__, __LINE__, (actual),
+
+    __should_type(bool)
+    __should_type(char)
+    __should_type(short)
+    __should_type(int)
+    __should_type(long)
+    __should_type(double)
+    __should_type(float)
+    __should_type(string)
+    __should_type(ptr)
+
+    #define should_bool(actual)     __should_call(bool, actual)
+    #define should_char(actual)     __should_call(char, actual)
+    #define should_short(actual)    __should_call(short, actual)
+    #define should_int(actual)      __should_call(int, actual)
+    #define should_long(actual)     __should_call(long, actual)
+    #define should_double(actual)   __should_call(double, actual)
+    #define should_float(actual)    __should_call(float, actual)
+    #define should_string(actual)   __should_call(string, actual)
+    #define should_ptr(actual)      __should_call(ptr, actual)
+    #define should(actual)          __should_call(ptr, actual)
+
+    #define be                      _cspec_should_be(),
+    #define not_be                  _cspec_should_not_be(),
+
+    #define null                    _cspec_should_be_null())
+    #define truthy                  _cspec_should_be_true())
+    #define falsey                  _cspec_should_be_false())
+
+    #define equal_to(expected)      (expected))
+
+    #define CSPEC_RESULT            _cspec_get_result();
 
 #ifdef __cplusplus
     }

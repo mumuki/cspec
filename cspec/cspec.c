@@ -28,6 +28,35 @@ static int IT_FAILURES_SHULDS = 0;
 #define SUCCESS_BULLET      "✔ "
 #define PENDING_BULLET      "• "
 
+
+typedef enum {
+    cbool, cchar, cshort, cint, clong, cdouble, cfloat, cstring, cptr
+} cspec_type_t;
+
+typedef union {
+    char cbool;
+    char cchar;
+    short cshort;
+    int cint;
+    long clong;
+    double cdouble;
+    float cfloat;
+    char* cstring;
+    void* cptr;
+} _union_t;
+
+typedef struct {
+    char* file;
+    char* format;
+    cspec_type_t type;
+    _union_t actual;
+    _union_t expected;
+} _should_t;
+
+#define MAX_COUNT 1024
+static _should_t* SHOULDS[] = { [ 0 ... (MAX_COUNT - 1)] = NULL };
+static int SHOULD_COUNT = 0;
+
 #define print_description(description, add_desc, spaces_str, type) {                                        \
     char* spaces = get_spaces();                                                                            \
     printf("%s%s%s%s%s%s%s\n", spaces, spaces_str, type##_##COLOR,                                          \
@@ -41,6 +70,7 @@ static int IT_FAILURES_SHULDS = 0;
 
     char* get_spaces();
     void _cspec_print_report();
+    void _cspec_print_should_report();
 
 // ---------------------------------------------------------------------------
 // ----- "PUBLICS" -----
@@ -63,6 +93,7 @@ static int IT_FAILURES_SHULDS = 0;
     void _cspec_it_post(const char* description) {
         if (IT_FAILURES_SHULDS != 0) {
             print_description(description, "", "  ", FAILURE);
+            _cspec_print_should_report();
         } else {
             SUCCESS_SHOULDS++;
             print_description(description, "", "  ", SUCCESS);
@@ -96,17 +127,58 @@ static int IT_FAILURES_SHULDS = 0;
         return FAILURE_SHOULDS;
     }
 
-    int _cspec_should_is_equal(void* actual, void* expected) {
-        return actual == expected;
+    int _cspec_should_be() {
+        return 0;
     }
 
-    int _cspec_should_not_equal(void* actual, void* expected) {
-        return actual != expected;
+    int _cspec_should_not_be() {
+        return 1;
     }
 
-    int _cspec_should_string_equal(void* actual, void* expected) {
-        return strcmp((char*) actual,(char*) expected) == 0;
+    int _cspec_should_be_true() {
+        return 1;
     }
+
+    int _cspec_should_be_false() {
+        return 0;
+    }
+
+    void* _cspec_should_be_null() {
+        return NULL;
+    }
+
+    #define __should_create(fmt, filename, real_type, act, exp) ({              \
+        _should_t* should = malloc(sizeof(_should_t));                          \
+        should->file = file;                                                    \
+        char* frmt = malloc(27); /* MAGIC NUMBER */                             \
+        strcpy(frmt,"Expected <" fmt "> but was <" fmt ">");                    \
+        should->format = frmt;                                                  \
+        should->type = real_type;                                               \
+        should->actual.real_type = act;                                         \
+        should->expected.real_type = exp;                                       \
+        should;                                                                 \
+    })                                                                          \
+
+    #define __should_def(type, actual, fmt, comparator)                                                         \
+        void _cspec_should_##type(char* file, int line, t_c##type actual, int negated, t_c##type expected) {    \
+            int bool = comparator;                                                                              \
+            bool = negated ? !(bool) : (bool);                                                                  \
+            if (!bool) SHOULDS[SHOULD_COUNT++] = __should_create(fmt, file, c##type, actual, expected);         \
+            if (IT_FAILURES_SHULDS == 0 && !bool) {                                                             \
+                FAILURE_SHOULDS++;                                                                              \
+                IT_FAILURES_SHULDS++;                                                                           \
+            }                                                                                                   \
+        }                                                                                                       \
+
+    __should_def(bool, actual, "%s", !!actual == !!expected)
+    __should_def(char, actual, "%c", actual == expected)
+    __should_def(short, actual, "%h", actual == expected)
+    __should_def(int, actual, "%i", actual == expected)
+    __should_def(long, actual, "%l", actual == expected)
+    __should_def(double, actual, "%f", actual == expected)
+    __should_def(float, actual, "%f", actual == expected)
+    __should_def(string, actual, "%s", strcmp(actual, expected) == 0)
+    __should_def(ptr, actual, "%p", actual == expected)
 
 // ---------------------------------------------------------------------------
 // ----- PRIVATES -----
@@ -132,3 +204,29 @@ static int IT_FAILURES_SHULDS = 0;
         return CSPEC_RESULT;
     }
 
+    void _cspec_print_should_report() {
+        int i;
+        char* spaces = get_spaces();
+        for(i = 0; i < MAX_COUNT && SHOULDS[i] != NULL; i++) {
+            _should_t* should = SHOULDS[i];
+            printf("%s    " FAILURE_BULLET, spaces);
+            char* bool(_union_t b) { return b.cbool != 0 ? "true" : "false"; }
+            switch (should->type) {
+                case cbool:   { printf(should->format, bool(should->expected), bool(should->actual));     break; }
+                case cchar:   { printf(should->format, should->expected.cchar, should->actual.cchar);     break; }
+                case cshort:  { printf(should->format, should->expected.cshort, should->actual.cshort);   break; }
+                case cint:    { printf(should->format, should->expected.cint, should->actual.cint);       break; }
+                case clong:   { printf(should->format, should->expected.clong, should->actual.clong);     break; }
+                case cdouble: { printf(should->format, should->expected.cdouble, should->actual.cdouble); break; }
+                case cfloat:  { printf(should->format, should->expected.cfloat, should->actual.cfloat);   break; }
+                case cstring: { printf(should->format, should->expected.cstring, should->actual.cstring); break; }
+                case cptr:    { printf(should->format, should->expected.cptr, should->actual.cptr);       break; }
+                default: break;
+            }
+            printf(" - %s\n", should->file);
+            free(should->format);
+            free(should);
+            SHOULDS[i] = NULL;
+        }
+        free(spaces);
+    }
