@@ -147,11 +147,12 @@ static int SHOULD_COUNT = 0;
         return NULL;
     }
 
-    #define __should_create(fmt, filename, real_type, act, exp) ({              \
+    #define __should_create(fmt, filename, real_type, act, exp, negated) ({     \
         _should_t* should = malloc(sizeof(_should_t));                          \
         should->file = file;                                                    \
-        char* frmt = malloc(27); /* MAGIC NUMBER */                             \
-        strcpy(frmt,"Expected <" fmt "> but was <" fmt ">");                    \
+        char* frmt = malloc(100); /* MAGIC NUMBER */                            \
+        if (!negated) strcpy(frmt,"Expected <" fmt "> but was <" fmt ">");      \
+        else strcpy(frmt,"Not expected <" fmt "> but was <" fmt ">");           \
         should->format = frmt;                                                  \
         should->type = real_type;                                               \
         should->actual.real_type = act;                                         \
@@ -163,7 +164,7 @@ static int SHOULD_COUNT = 0;
         void _cspec_should_##type(char* file, int line, t_c##type actual, int negated, t_c##type expected) {    \
             int bool = comparator;                                                                              \
             bool = negated ? !(bool) : (bool);                                                                  \
-            if (!bool) SHOULDS[SHOULD_COUNT++] = __should_create(fmt, file, c##type, actual, expected);         \
+            if (!bool) SHOULDS[SHOULD_COUNT++] = __should_create(fmt, file, c##type, actual, expected, negated);\
             if (IT_FAILURES_SHULDS == 0 && !bool) {                                                             \
                 FAILURE_SHOULDS++;                                                                              \
                 IT_FAILURES_SHULDS++;                                                                           \
