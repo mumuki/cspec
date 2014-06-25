@@ -62,11 +62,12 @@
 
     int _cspec_get_result(void);
 
+    static void __cspec_noop() {}
+
+    static void(*__before)(void) = __cspec_noop;
+    static void(*__after)(void) = __cspec_noop;
+
     #define describe(description, block) {                      \
-        static void(*__before)(void);                           \
-        static void(*__after)(void);                            \
-        { __f_agn(__before, function() {}); };                  \
-        { __f_agn(__after, function() {}); };                   \
         _cspec_describe_pre(description);                       \
         __function(block) function();                           \
         _cspec_describe_post(description);                      \
@@ -84,13 +85,13 @@
         _cspec_skip(description);                               \
     }                                                           \
 
-    #define before(block) {                                     \
-        __f_agn(__before, block);                               \
-    }                                                           \
+    #define before(block)                                       \
+        static void(*__before)(void);                           \
+        { __f_agn(__before, block); }                           \
 
-    #define after(block) {                                      \
-        __f_agn(__after, block);                                \
-    }                                                           \
+    #define after(block)                                        \
+        static void(*__after)(void);                            \
+        { __f_agn(__after, block); }                            \
 
     #define _should(boolean) {                                  \
         _cspec_should(boolean, __FILE__, __LINE__);             \
@@ -166,7 +167,8 @@
     #define truthy                  _cspec_should_be_true())
     #define falsey                  _cspec_should_be_false())
 
-    #define equal_to(expected)      (expected))
+    #define equal                   (
+    #define to(expected)            expected))
 
     #define CSPEC_RESULT            _cspec_get_result();
 
