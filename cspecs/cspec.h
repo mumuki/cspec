@@ -49,11 +49,9 @@
 
         #define context     __attribute__((constructor)) void
 
-        #define describe    __describe(
-        #define it          __it      (
-
-        #define do          , ({ void __$__() {
-        #define end         }; __$__;}));
+        #define describe(desc)    __describe(desc, ({ void __$__() {
+        #define it(desc)          __it      (desc, ({ void __$__() {
+        #define end               } __$__;}));
 
     // ---------------------------------------------------------------------------
     // ----- MACROS SHOULD -----
