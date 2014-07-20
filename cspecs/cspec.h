@@ -30,7 +30,7 @@
         void __it     (String description, Function function);
         void __it_post(String description);
 
-        void __should(String file, Int line, Int actual, Bool negated, Int expected);
+        void __should(String format, String file, Int line, Int actual, Bool negated, Int expected);
 
     // ---------------------------------------------------------------------------
     // ----- MACROS API -----
@@ -48,7 +48,7 @@
     // ----- MACROS SHOULD -----
     // ---------------------------------------------------------------------------
 
-        #define should(actual)    __should(__FILE__, __LINE__, actual,
+        #define should(actual)    __should("%i", __FILE__, __LINE__, actual,
         #define be                false
         #define not               !
         #define equal             ,
