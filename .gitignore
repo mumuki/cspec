@@ -2,3 +2,4 @@ Debug
 build
 .project
 .cproject
+test.c
