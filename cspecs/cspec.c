@@ -10,6 +10,7 @@ __attribute__((constructor)) void init() {
 }
 
 #define MAX_SHOULDS_PER_IT 64
+#define MAX_CHAINS_HOOKS 64
 
 #define DESCRIBE_COLOR      "\x1b[0m"
 #define FAILURE_COLOR       "\x1b[38;5;1m"
@@ -22,7 +23,6 @@ __attribute__((constructor)) void init() {
 #define SUCCESS_BULLET      "✔ "
 #define PENDING_BULLET      "• "
 #define DESCRIBE_BULLET     ""
-
 
 typedef struct _should {
   Int     line;
@@ -43,6 +43,9 @@ Int DESCRIBE_DEEP_LEVEL = 0;
 
 String CURRENT_DESCRIBE = "";
 
+Function AFTERS[MAX_CHAINS_HOOKS];
+Function BEFORES[MAX_CHAINS_HOOKS];
+
 It**  ITS;
 
 // ---------------------------------------------------------------------------
@@ -57,6 +60,8 @@ It**  ITS;
     void    __print_current_it_result();
     void    __print_it_result_detail(It* _it);
     char*   __get_spaces();
+    void    __after_execute();
+    void    __before_execute();
 
     #define print_description(description, add_desc, spaces_str, separator, type) { \
         char* spaces = __get_spaces();                                              \
@@ -79,6 +84,8 @@ It**  ITS;
 
     void __describe_pre(String description) {
         if (DESCRIBE_DEEP_LEVEL == 0) puts("");
+        AFTERS [DESCRIBE_DEEP_LEVEL] = NULL;
+        BEFORES[DESCRIBE_DEEP_LEVEL] = NULL;
         DESCRIBE_DEEP_LEVEL++;
         CURRENT_DESCRIBE = description;
         print_description(description, "", "", "", DESCRIBE);
@@ -92,6 +99,8 @@ It**  ITS;
 
     void __describe_post(String description) {
         DESCRIBE_DEEP_LEVEL--;
+        AFTERS [DESCRIBE_DEEP_LEVEL] = NULL;
+        BEFORES[DESCRIBE_DEEP_LEVEL] = NULL;
     }
 
 // ---------------------------------------------------------------------------
@@ -105,9 +114,11 @@ It**  ITS;
     }
 
     void __it(String description, Function function) {
+        __before_execute();
         __it_pre(description);
         function();
         __it_post(description);
+        __after_execute();
     }
 
     void __it_post(String description) {
@@ -115,8 +126,22 @@ It**  ITS;
     }
 
 // ---------------------------------------------------------------------------
+// ----- HOOKS -----
+// ---------------------------------------------------------------------------
+
+    void __before(Function function) {
+        BEFORES[DESCRIBE_DEEP_LEVEL - 1] = function;
+    }
+
+    void __after(Function function) {
+        AFTERS[DESCRIBE_DEEP_LEVEL - 1] = function;
+    }
+
+// ---------------------------------------------------------------------------
 // ----- SHOULDS -----
 // ---------------------------------------------------------------------------
+
+    __should_declaration(boolp, String);
 
     #define __should_definition(suffix, type, comparator, format)                                   \
         void __should_##suffix(String file, Int line, type actual, Bool negated, type expected) {   \
@@ -132,7 +157,12 @@ It**  ITS;
             }                                                                                       \
         }                                                                                           \
 
-    __should_definition(bool  , String, strcmp(actual, expected) == 0 , "%s");
+    void __should_bool(String file, Int line, Bool actual, Bool negated, Bool expected) {
+        char* to_s(Bool p) { return p ? "true" : "false"; }
+        __should_boolp(file, line, to_s(actual), negated, to_s(expected));
+    }
+
+    __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s");
     __should_definition(char  , char  , actual == expected            , "%c");
     __should_definition(short , short , actual == expected            , "%i");
     __should_definition(int   , int   , actual == expected            , "%i");
@@ -238,3 +268,16 @@ It**  ITS;
         return spaces;
     }
 
+    void __before_execute() {
+        int i;
+        for(i = 0; i < DESCRIBE_DEEP_LEVEL; i++)
+            if (BEFORES[i] != NULL)
+                BEFORES[i]();
+    }
+
+    void __after_execute() {
+        int i;
+        for(i = DESCRIBE_DEEP_LEVEL - 1; i >= 0; i--)
+            if (AFTERS[i] != NULL)
+                AFTERS[i]();
+    }

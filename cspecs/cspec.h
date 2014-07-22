@@ -30,10 +30,13 @@
         void __it     (String description, Function function);
         void __it_post(String description);
 
+        void __after (Function function);
+        void __before(Function function);
+
         #define __should_declaration(suffix, type)                                                  \
             void __should_##suffix(String file, Int line, type actual, Bool negated, type expected)
 
-        __should_declaration(bool  , String);
+        __should_declaration(bool  , Bool);
         __should_declaration(char  , char  );
         __should_declaration(short , short );
         __should_declaration(int   , int   );
@@ -51,6 +54,10 @@
 
         #define describe(desc)    __describe(desc, ({ void __$__() {
         #define it(desc)          __it      (desc, ({ void __$__() {
+
+        #define after()           __after (({ void __$__() {
+        #define before()          __before(({ void __$__() {
+
         #define end               } __$__;}));
 
     // ---------------------------------------------------------------------------
@@ -59,7 +66,7 @@
 
         #define __should_call(suffix, actual)   __should_##suffix(__FILE__, __LINE__, (actual),
 
-        #define should_bool(actual)             __should_call(bool  , (actual) ? "true" : "false")
+        #define should_bool(actual)             __should_call(bool  , actual)
         #define should_char(actual)             __should_call(char  , actual)
         #define should_short(actual)            __should_call(short , actual)
         #define should_int(actual)              __should_call(int   , actual)
