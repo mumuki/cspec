@@ -81,8 +81,8 @@
         #define not               !
         #define be                false
 
-        #define truthy            , "true")
-        #define falsey            , "false")
+        #define truthy            , true)
+        #define falsey            , false)
         #define null              , NULL)
         #define equal             ,
         #define to(expected)      expected)
