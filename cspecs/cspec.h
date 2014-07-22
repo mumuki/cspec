@@ -30,8 +30,10 @@
         void __it     (String description, Function function);
         void __it_post(String description);
 
-        void __after (Function function);
-        void __before(Function function);
+        void __skip   (String description, Function function);
+
+        void __after  (Function function);
+        void __before (Function function);
 
         #define __should_declaration(suffix, type)                                                  \
             void __should_##suffix(String file, Int line, type actual, Bool negated, type expected)
@@ -54,6 +56,7 @@
 
         #define describe(desc)    __describe(desc, ({ void __$__() {
         #define it(desc)          __it      (desc, ({ void __$__() {
+        #define skip(desc)        __skip    (desc, ({ void __$__() {
 
         #define after()           __after (({ void __$__() {
         #define before()          __before(({ void __$__() {

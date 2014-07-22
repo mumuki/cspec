@@ -15,7 +15,7 @@ __attribute__((constructor)) void init() {
 #define DESCRIBE_COLOR      "\x1b[0m"
 #define FAILURE_COLOR       "\x1b[38;5;1m"
 #define SUCCESS_COLOR       "\x1b[38;5;2m"
-#define PENDING_COLOR       "\x1b[38;5;3m"
+#define PENDING_COLOR       "\x1b[38;5;6m"
 #define NO_COLOR            "\x1b[0m"
 #define UNDERLINE           "\x1b[4m"
 
@@ -39,6 +39,7 @@ typedef struct _it {
 
 Int IT_COUNT            = 0;
 Int SHOULD_COUNT        = 0;
+Int PENDING_COUNT       = 0;
 Int DESCRIBE_DEEP_LEVEL = 0;
 
 String CURRENT_DESCRIBE = "";
@@ -123,6 +124,11 @@ It**  ITS;
 
     void __it_post(String description) {
         __print_current_it_result();
+    }
+
+    void __skip(String description, Function function) {
+        PENDING_COUNT++;
+        print_description(description, "", "  ", "", PENDING);
     }
 
 // ---------------------------------------------------------------------------
@@ -227,6 +233,7 @@ It**  ITS;
         fclose(devNull);
         printf(SUCCESS_COLOR "  %d success\n" NO_COLOR, IT_COUNT - failure_count);
         if (failure_count > 0) printf(FAILURE_COLOR "  %d failure\n" NO_COLOR, failure_count);
+        if (PENDING_COUNT > 0) printf(PENDING_COLOR "  %d failure\n" NO_COLOR, PENDING_COUNT);
         puts("");
         return failure_count;
     }
