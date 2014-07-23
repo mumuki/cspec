@@ -58,10 +58,10 @@
         #define it(desc)          __it      (desc, ({ void __$__()
         #define skip(desc)        __skip    (desc, ({ void __$__()
 
-        #define after()           __after (({ void __$__()
-        #define before()          __before(({ void __$__()
+        #define after             __after (({ void __$__()
+        #define before            __before(({ void __$__()
 
-        #define _                 __$__;}));
+        #define end               __$__;}));
 
     // ---------------------------------------------------------------------------
     // ----- MACROS SHOULD -----
