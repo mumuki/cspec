@@ -152,8 +152,9 @@ It**  ITS;
     #define __should_definition(suffix, type, comparator, format)                                   \
         void __should_##suffix(String file, Int line, type actual, Bool negated, type expected) {   \
             It* _it = __current_it();                                                               \
-            _it->is_failure = negated ? (comparator) : !(comparator);                               \
-            if (_it->is_failure) {                                                                  \
+            Bool is_failure = negated ? (comparator) : !(comparator);                               \
+            if (is_failure) {                                                                       \
+                _it->is_failure = true;                                                             \
                 String template = __get_template(negated, format);                                  \
                 int message_size = fprintf(devNull, template, expected, actual);                    \
                 String error = malloc(message_size + 1);                                            \
