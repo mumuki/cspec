@@ -18,6 +18,7 @@ __attribute__((constructor)) void init() {
 #define PENDING_COLOR       "\x1b[38;5;6m"
 #define NO_COLOR            "\x1b[0m"
 #define UNDERLINE           "\x1b[4m"
+#define BOLD                "\x1b[1m"
 
 #define FAILURE_BULLET      "✖ "
 #define SUCCESS_BULLET      "✔ "
@@ -59,7 +60,7 @@ It**  ITS;
     int     __report       (void);
     Should* __should_create(String error, String file, Int line);
     void    __print_current_it_result();
-    void    __print_it_result_detail(It* _it);
+    void    __print_it_result_detail(It* _it, int failure_count);
     char*   __get_spaces();
     void    __after_execute();
     void    __before_execute();
@@ -169,15 +170,15 @@ It**  ITS;
         __should_boolp(file, line, to_s(actual), negated, to_s(expected));
     }
 
-    __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s");
-    __should_definition(char  , char  , actual == expected            , "%c");
-    __should_definition(short , short , actual == expected            , "%i");
-    __should_definition(int   , int   , actual == expected            , "%i");
-    __should_definition(long  , long  , actual == expected            , "%l");
-    __should_definition(double, double, actual == expected            , "%f");
-    __should_definition(float , float , actual == expected            , "%f");
-    __should_definition(ptr   , void* , actual == expected            , "%p");
-    __should_definition(string, String, strcmp(actual, expected) == 0 , "%s");
+    __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s"    );
+    __should_definition(char  , char  , actual == expected            , "%c"    );
+    __should_definition(short , short , actual == expected            , "%i"    );
+    __should_definition(int   , int   , actual == expected            , "%i"    );
+    __should_definition(long  , long  , actual == expected            , "%l"    );
+    __should_definition(double, double, actual == expected            , "%f"    );
+    __should_definition(float , float , actual == expected            , "%f"    );
+    __should_definition(ptr   , void* , actual == expected            , "%p"    );
+    __should_definition(string, String, strcmp(actual, expected) == 0 , "\"%s\"");
 
 // ---------------------------------------------------------------------------
 // ----- PRIVATE -----
@@ -209,7 +210,7 @@ It**  ITS;
         free(self);
     }
 
-    #define VALUE UNDERLINE "%s" NO_COLOR
+    #define VALUE NO_COLOR "%s" NO_COLOR
 
     char* __get_template(Bool neg, String format) {
         char* template = malloc(128);
@@ -226,7 +227,7 @@ It**  ITS;
             It* _it = ITS[i];
             if (_it->is_failure) {
                 failure_count++;
-                __print_it_result_detail(_it);
+                __print_it_result_detail(_it, failure_count);
             }
             __it_destroy(_it);
         }
@@ -247,25 +248,34 @@ It**  ITS;
 // ----- FANCY REPORT -----
 // ---------------------------------------------------------------------------
 
+    void print_failure_description(It* _it, int failure_count, char* extra_spaces) {
+        char* spaces = __get_spaces();
+        printf("%s%s%s%s%d%s%s%s%s%s\n", spaces, "  ", extra_spaces, FAILURE_COLOR, failure_count, ") " , _it->_describe, " - ", _it->description, NO_COLOR);
+        free(spaces);
+    }
+
+    int failure_count_it = 0;
     void __print_current_it_result() {
         It* _it = __current_it();
         if (_it->is_failure) {
-            print_description(_it->description, "", "  ", "", FAILURE);
+            failure_count_it++;
+            print_failure_description(_it, failure_count_it, "");
         } else {
             print_description(_it->description, "", "  ", "", SUCCESS);
         }
     }
 
-    void __print_it_result_detail(It* _it) {
-      print_description(_it->_describe, _it->description, "    ", " - ", FAILURE);
-      int j; for (j = 0; j < MAX_SHOULDS_PER_IT && _it->shoulds[j] != NULL; j++) {
-          Should* _should = _it->shoulds[j];
-          char* spaces = __get_spaces();
-          printf("%s      - %s [%s:%d]\n", spaces, _should->error, _should->file, _should->line);
-          __should_destroy(_should);
-          free(spaces);
-      }
-      puts("");
+    void __print_it_result_detail(It* _it, int failure_count) {
+        print_failure_description(_it, failure_count, "  ");
+
+        int j; for (j = 0; j < MAX_SHOULDS_PER_IT && _it->shoulds[j] != NULL; j++) {
+            Should* _should = _it->shoulds[j];
+            char* spaces = __get_spaces();
+            printf("%s      - %s [%s:%d]\n", spaces, _should->error, _should->file, _should->line);
+            __should_destroy(_should);
+            free(spaces);
+        }
+        puts("");
     }
 
     char* __get_spaces() {
@@ -289,3 +299,4 @@ It**  ITS;
             if (AFTERS[i] != NULL)
                 AFTERS[i]();
     }
+
