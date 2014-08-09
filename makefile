@@ -3,34 +3,38 @@ CC=gcc
 
 C_SRCS=$(shell find . -iname "*.c" | tr '\n' ' ')
 H_SRCS=$(shell find . -iname "*.h" | tr '\n' ' ')
-OBJS=$(C_SRCS:./%.c=build/%.o)
+
+OBJS=$(C_SRCS:./%.c=release/%.o)
 
 # Clean and compile .so
-all: build/libcspec.so
+all: release/libcspecs.so
 
 create-dirs:
-	mkdir -p build/cspec
+	mkdir -p release/cspecs/
 
-build/libcspec.so: create-dirs $(OBJS)
-	$(CC) -shared -o "build/libcspec.so" $(OBJS)
+release/libcspecs.so: create-dirs $(OBJS)
+	$(CC) -shared -o "release/libcspecs.so" $(OBJS)
 
-build/cspec/%.o: cspec/%.c
+release/cspecs/%.o: cspecs/%.c
+	$(CC) -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+
+release/cspecs/collections/%.o: cspecs/collections/%.c
 	$(CC) -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 
 # Add debug parameters and compile
 debug: CC += -DDEBUG -g
 debug: all
 
-# Clean build files
+# Clean release files
 clean:
-	$(RM) build
+	$(RM) release
 
 install: all
-	cp -u build/libcspec.so /usr/lib
+	cp -u release/libcspecs.so /usr/lib
 	cp --parents -u $(H_SRCS) /usr/include
 
 uninstall:
-	rm -f /usr/lib/libcspec.so
-	rm -rf /usr/include/cspec
+	rm -f /usr/lib/libcspecs.so
+	rm -rf /usr/include/cspecs
 
 .PHONY: all create-dirs clean install uninstall

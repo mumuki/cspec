@@ -1,4 +1,7 @@
 Debug
 build
+release
 .project
 .cproject
+test.c
+example.c
