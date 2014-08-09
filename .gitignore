@@ -5,3 +5,4 @@ release
 .cproject
 test.c
 example.c
+cspec.wiki
