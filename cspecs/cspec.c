@@ -235,7 +235,7 @@ It**  ITS;
         fclose(devNull);
         printf(SUCCESS_COLOR "  %d success\n" NO_COLOR, IT_COUNT - failure_count);
         if (failure_count > 0) printf(FAILURE_COLOR "  %d failure\n" NO_COLOR, failure_count);
-        if (PENDING_COUNT > 0) printf(PENDING_COLOR "  %d failure\n" NO_COLOR, PENDING_COUNT);
+        if (PENDING_COUNT > 0) printf(PENDING_COLOR "  %d pending\n" NO_COLOR, PENDING_COUNT);
         puts("");
         return failure_count;
     }
