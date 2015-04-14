@@ -1,31 +1,32 @@
- #CSpec 
-Mini framework para hacer [BDD](http://en.wikipedia.org/wiki/Behavior-driven_development) en C
+#CSpec 
+ 
+CSpec is a small behavior driven development ([BDD](http://en.wikipedia.org/wiki/Behavior-driven_development)) framework for C. You can read more about BDD on www.behaviour-driven.org
 
-##Un pequeño ejemplo
+##A Small Example
 
 ```C
 #include <stdio.h>
 #include <stdbool.h>
 #include <cspecs/cspec.h>
 
-context (ejemplo) {
+context (example) {
 
-    describe("Describe de ejemplo") {
+    describe("Describe the example") {
 
-        it("true debería ser igual a true") {
+        it("true should be equal true") {
             should_bool(true) be equal to(true);
         } end
 
-        it("true no debería ser igual a false") {
+        it("true shouldn't be equal to false") {
             should_bool(true) not be equal to(false);
         } end
 
-        it("este test va a fallar porque 10 no es igual a 11") {
+        it("this test will fail because 10 is not equal to 11") {
             should_int(10) be equal to(11);
         } end
 
-        skip("este test deberia fallar porque \"Hola\" no es \"Chau\"") {
-            should_string("Hola") be equal to("Chau");
+        skip("this test will fail because \"Hello\" is not \"Bye\"") {
+            should_string("Hello") be equal to("Bye");
         } end
 
     } end
@@ -33,22 +34,22 @@ context (ejemplo) {
 }
 ```
 
-* Compilar: `gcc cspecEjemplo.c -o cspecEjemplo -lcspecs`
-* Ejecutar: `./cspecEjemplo`
+* Compile: `gcc cspecExample.c -o cspecExample -lcspecs`
+* Execute: `./cspecExample`
 
 ```
 
-  Describe de ejemplo
-    ✔ true debería ser igual a true
-    ✔ true no debería ser igual a false
-    1) Describe de ejemplo - este test va a fallar porque 10 no es igual a 11
-    • este test deberia fallar porque "Hola" no es "Chau"
+  Describe the example
+    ✔ true should be equal true
+    ✔ true shouldn't be equal to false
+    1) this test will fail because 10 is not equal to 11
+    • this test will fail because "Hello" is not "Bye"
 
 
   Summary
 
-    1) Describe de ejemplo - este test va a fallar porque 10 no es igual a 11
-      - Expected <11> but was <10> [./cspecEjemplo.c:18]
+    1) Describe the example - this test will fail because 10 is not equal to 11
+      - Expected <11> but was <10> [./cspecExample.c:18]
 
   2 success
   1 failure
@@ -56,142 +57,143 @@ context (ejemplo) {
 
 ```
 
-##Empecemos!
-###¿Cómo lo instalo?
+##Lets get started!
+###¿How do i install it?
 1. `git clone https://github.com/pepita-remembrance/cspec.git`
 1. `cd cspec`
 1. `make`
 1. `sudo make install`
 
-###Ahora, ¿qué hago?
-* Escribí el código C que quieras
-* Probalo usando este framework, para eso no te olvides de compilarlo con `-lcspecs`. Por ejemplo: `gcc cspecEjemplo.c -o cspecEjemplo -lcspec`
-* Correlo en la consola: `./cspecEjemplo`
+###Now, ¿What should i do?
+* Write your C code
+* Test it with this framework, don't forget to compile it with the `-lcspecs` option. For example: `gcc cspecExample.c -o cspecExample -lcspec`
+* Run it on the console: `./cspecExample`
 
-####¿Estás codificando en eclipse y te muestra errores por todos lados?
-Tenés que agregar cspec a las dependencias del proyecto.
-Para eso...
+####¿Are you using Eclipse IDE and it's showing errors all over the project?
+You need to add cspec to the project dependencies.
+In order to do that, follow these steps...
 
-1. Click derecho en el proyecto => `Properties`
-1. En el panel de la derecha ir a `C/C++ Build` => `Settings` => `Tool Settings` => `GCC C++ Linker` => `Libraries`
-1. En el panel de la derecha, que está arriba (`Libraries (-l)`) hacé click en `add` y luego escribí `cspecs`
-1. Aplicá los cambios
-1. Recompilar el proyecto
+1. Right click on the project => `Properties`
+1. In the right panel go to `C/C++ Build` => `Settings` => `Tool Settings` => `GCC C++ Linker` => `Libraries`
+1. In the right pannel, above (`Libraries (-l)`), click on `add` and then write `cspecs`
+1. Apply changes
+1. Recompile the project
 
-###¿Qué me ofrece CSpecs?
-Me ofrece un conjunto de operaciones - basadas en [RSpec](http://rspec.info/) (Ruby), [Mocha](http://visionmedia.github.io/mocha/), [Jasmine](http://jasmine.github.io/) y [Karma](http://karma-runner.github.io/0.12/index.html) (JavaScript) - que me permiten realizar pruebas (unitarias y de integración del código) [orientadas al comportamiento](http://en.wikipedia.org/wiki/Behavior-driven_development)
+###¿What does CSpecs offer me?
+It offers you a seto of operations - based on [RSpec](http://rspec.info/) (Ruby), [Mocha](http://visionmedia.github.io/mocha/), [Jasmine](http://jasmine.github.io/) y [Karma](http://karma-runner.github.io/0.12/index.html) (JavaScript) - that allows you to make [oriented behavior](http://en.wikipedia.org/wiki/Behavior-driven_development) (unit and integration code) tests.
 
-##¿Cómo lo uso?
+##¿How do i use the framework?
 
 ###context
-Cada comportamiento a testear debe estar dentro de un contexto. La forma de definir un contexto en CSpecs es de esta forma:
+Each behaviour to test must be declared within a context. The syntax to define a context is showed below:
 
 ```C
-context(<identificador>) {
-    /* Acá va a el contexto */
+context(<identifier>) {
+    /* You're inside the context */
 }
 ```
-
-Cómo todo lo que ocurre en C, y dado que el framework trabaja de forma sincrónica, el código escrito dentro de un contexto se ejecuta de forma secuencial.
-
-Dentro de un **contexto** puedo escribir funciones y llamarlas desde mis tests, puedo incluir archivos (.h), definir macros y describir escenarios - **describes**.
+As everything that happens in C, the framework also works in a synchronous way, the code written inside a context is executed sequentially.
+Inside a **context**, you can write functions and call them in your tests, you can also include files (.h), define macros and write scenarios - **describes**.
 
 ###describe
-Cada escenario se escribe dentro de un **describe**, de esta forma:
+Each scenario is written inside a **describe**, declared in this way:
 
 ```C
-describe("Breve descripción del escenario") {
-    /* Acá va a el código */
+describe("Brief description of the scenario") {
+    /* Here goes the code */
 } end
 ```
 
-Nuevamente, dentro de un **describe** puedo escribir funciones y llamarlas desde mis test, puedo incluir archivos (.h), definir macros y escribir los test - **its**.
+Again, inside a **describe** you can write functions and call from your tests, include files (.h), define macros and write the tests - **its**.
 
 ###it
 
-Cada **it** es un test, propiamente dicho.
+Each **it** represents a test.
 
 ```C
-it("Breve descripción del test") {
-    /* Acá va a el código, con sus respectivas aserciones */
+it("Brief description of the test") {
+    /* Here goes the test code, along with the assertions */
 } end
 ```
 
-Dentro de mismo, debo realizar las aserciones sobre el comportamiento que quiero probar. Para ello, CSpecs, cuenta con operaciones básicas para realizarlas - **shoulds**
+Inside it, you have to write the assertions about the behaviour you want to test. In order to do that CSpecs has a set of basic operations to do that - **shoulds**
 
 ###should
-Cada **should** es una aserción, la cual espera 2 valores. El primero es el que quiero testear contra el segundo, el esperado.
+
+Each **should** is an assertion, that expects 2 values. The former is the actual value and the latter, the expected one.
 
 ```C
-should_bool(<booleano_actual>) be equal to(<booleano_esperado>);
-should_bool(<booleano_actual>) not be equal to(<booleano_no_esperado>);
+should_bool(<actual_boolean>) be equal to(<expected_boolean>);
+should_bool(<actual_boolean>) not be equal to(<unexpected_boolean>);
 
 should_char(<caracter_actual>) be equal to(<caracter_esperado>);
 should_char(<caracter_actual>) not be equal to(<caracter_no_esperado>);
 
-should_short(<numero_actual>) be equal to(<numero_esperado>);
-should_short(<numero_actual>) not be equal to(<numero_no_esperado>);
+should_short(<actual_number>) be equal to(<expected_number>);
+should_short(<actual_number>) not be equal to(<unexpected_number>);
 
-should_int(<numero_actual>) be equal to(<numero_esperado>);
-should_int(<numero_actual>) not be equal to(<numero_no_esperado>);
+should_int(<actual_number>) be equal to(<expected_number>);
+should_int(<actual_number>) not be equal to(<unexpected_number>);
 
-should_long(<numero_actual>) be equal to(<numero_esperado>);
-should_long(<numero_actual>) not be equal to(<numero_no_esperado>);
+should_long(<actual_number>) be equal to(<expected_number>);
+should_long(<actual_number>) not be equal to(<unexpected_number>);
 
-should_float(<flotante_actual>) be equal to(<flotante_esperado>);
-should_float(<flotante_actual>) not be equal to(<flotante_no_esperado>);
+should_float(<actual_float>) be equal to(<expected_float>);
+should_float(<actual_float>) not be equal to(<unexpected_float>);
 
 should_double(<decimal_actual>) be equal to(<decimal_esperado>);
 should_double(<decimal_actual>) not be equal to(<decimal_no_esperado>);
 
-should_ptr(<puntero_actual>) be equal to(<puntero_esperado>);
-should_ptr(<puntero_actual>) not be equal to(<puntero_no_esperado>);
+should_ptr(<actual_pointer>) be equal to(<expected_pointer>);
+should_ptr(<actual_pointer>) not be equal to(<unexpected_pointer>);
 
-should_string(<palabra_actual>) be equal to(<palabra_esperada>);
-should_string(<palabra_actual>) not be equal to(<palabra_no_esperada>);
+should_string(<actual_word>) be equal to(<expected_word>);
+should_string(<actual_word>) not be equal to(<unexpected_word>);
 ```
-
-A su vez, CSpecs ofrece [azúcares sintácticos](http://en.wikipedia.org/wiki/Syntactic_sugar) para ciertos tipos de aserciones, como las siguietes.
+Also, CSpecs offers [syntactic sugar](http://en.wikipedia.org/wiki/Syntactic_sugar) for some of the assertions, like the following examples:
 
 ```C
-should_bool(<booleano_actual>) be truthy;
-should_bool(<booleano_actual>) not be truthy;
+should_bool(<actual_boolean>) be truthy;
+should_bool(<actual_boolean>) not be truthy;
 
-should_bool(<booleano_actual>) be falsey;
-should_bool(<booleano_actual>) not be falsey;
+should_bool(<actual_boolean>) be falsey;
+should_bool(<actual_boolean>) not be falsey;
 
-should_ptr(<puntero_actual>) be null;
-should_ptr(<puntero_actual>) not be null;
+should_ptr(<actual_pointer>) be null;
+should_ptr(<actual_pointer>) not be null;
 ```
 
 ###Hooks - before y after
 
-Hay veces que entre los test se repiten escenarios o configuraciones iniciales y/o se libera la memoria de las mismas variables. Para manejar eso, dentro de cada **describe**, puede agregarse una porcion de código para ejecutar **antes** y **después** de cada **it**
+Sometimes the scenarios, initial configurations, or deallocation of the variables get repeated between tests. In order to handle that, inside each **describe**, you can add
+a block code to execute **before** and **after** each test (**it**).
 
 ####before
 ```C
 before {
-    /* codigo para ejecutar antes de cada it */
+    /* Code to execute before each test */
 } end
 ```
 
 ####after
 ```C
 after {
-    /* codigo para ejecutar después de cada it */
+    /* Code to execute after each test */
 } end
 ```
 
-**Nota:** Tener en cuenta que, como se ha mencionado anteriormente, el describe se ejecuta de forma secuencial, por eso es __muy importante__ recordar que el **before** y **after** deben estar al principio del **describe** (antes del primer **it**)
+**Note:** As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the **before** and **after**
+must be declared in the beggining of the **describe** scenario, even before the first test.
 
-##Veamos ahora un ejemplo completo, con su respectiva ejecución
+
+##Now let's see a complete example, with the execution flow
 
 ```C
 #include <stdio.h>
 #include <stdlib.h>
 #include <cspecs/cspec.h>
 
-context (ejemplo_completo) {
+context (complete_example) {
 
     describe("Describe 1") {
 
@@ -211,7 +213,7 @@ context (ejemplo_completo) {
             a = NULL;
         } end
 
-        it("*a debería ser 10 y b debería ser 20") {
+        it("*a should be 10 and b should be 20") {
             should_int(*a) be equal to(10);
             should_int(b) be equal to(20);
         } end
@@ -230,7 +232,7 @@ context (ejemplo_completo) {
                 a = NULL;
             } end
 
-            it("*a debería ser 30 y b debería ser 15") {
+            it("*a should be 30 and b should be 15") {
                 should_int(*a) be equal to(30);
                 should_int(b) be equal to(15);
             } end
@@ -248,7 +250,7 @@ context (ejemplo_completo) {
                     a = NULL;
                 } end
 
-                it("*a deberia ser 30 y b debería ser 150") {
+                it("*a should be 30 and b should be 150") {
                     should_int(*a) be equal to(30);
                     should_int(b) be equal to(150);
                 } end
@@ -259,7 +261,7 @@ context (ejemplo_completo) {
 
         describe("Describe 4") {
 
-            it("*a debería ser 10 y b debería ser 20") {
+            it("*a should be 10 and b should be 20") {
                 should_int(*a) be equal to(10);
                 should_int(b) be equal to(20);
             } end
@@ -270,32 +272,31 @@ context (ejemplo_completo) {
 
 }
 ```
-
-Una vez compilado el código y ejecutado, nos daría un reporte como el siguiente:
+Once the code has been compiled and executed, it'll give us a report of all the tests like the following:
 
 ```
 
   Describe 1
 before 1
-    ✔ *a debería ser 10 y b debería ser 20
+    ✔ *a should be 10 and b should be 20
 after 1
     Describe 2
 before 1
 before 2
-      ✔ *a debería ser 30 y b debería ser 15
+      ✔ *a should be 30 and b should be 15
 after 2
 after 1
       Describe 3
 before 1
 before 2
 before 3
-        ✔ *a deberia ser 30 y b debería ser 150
+        ✔ *a should be 30 and b should be 150
 after 3
 after 2
 after 1
     Describe 4
 before 1
-      ✔ *a debería ser 10 y b debería ser 20
+      ✔ *a should be 10 and b should be 20
 after 1
 
 
@@ -305,9 +306,15 @@ after 1
 
 ```
 
-###¿Cómo lo desinstalo?
-1. Ir a la carpeta clonada del repositorio.
+###¿How do i uninstall cspec?
+1. go to the cloned project directory.
 1. `make clean`
 1. `sudo make uninstall`
 
-######Gracias!
+
+##License
+
+This framework uses the GPLv3 as license. Fork it and contribute with the project!
+
+######Thanks!
+
