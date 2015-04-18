@@ -6,6 +6,8 @@ H_SRCS=$(shell find . -iname "*.h" | tr '\n' ' ')
 
 OBJS=$(C_SRCS:./%.c=release/%.o)
 
+UNAME=$(shell uname)
+
 # Clean and compile .so
 all: release/libcspecs.so
 
@@ -30,8 +32,13 @@ clean:
 	$(RM) release
 
 install: all
+ifeq ($(UNAME), Darwin)
+	cp release/libcspecs.so /usr/lib
+	ditto $(H_SRCS) /usr/include
+else
 	cp -u release/libcspecs.so /usr/lib
 	cp --parents -u $(H_SRCS) /usr/include
+endif
 
 uninstall:
 	rm -f /usr/lib/libcspecs.so
