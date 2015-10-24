@@ -11,10 +11,10 @@ UNAME=$(shell uname)
 # Clean and compile .so
 all: release/libcspecs.so
 
-create-dirs:
+release/cspecs:
 	mkdir -p release/cspecs/
 
-release/libcspecs.so: create-dirs $(OBJS)
+release/libcspecs.so: release/cspecs/ $(OBJS)
 	$(CC) -shared -o "release/libcspecs.so" $(OBJS)
 
 release/cspecs/%.o: cspecs/%.c
@@ -44,4 +44,4 @@ uninstall:
 	rm -f /usr/lib/libcspecs.so
 	rm -rf /usr/include/cspecs
 
-.PHONY: all create-dirs clean install uninstall
+.PHONY: all clean install uninstall
