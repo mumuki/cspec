@@ -1,8 +1,7 @@
-#CSpec 
- 
-CSpec is a small behavior driven development ([BDD](http://en.wikipedia.org/wiki/Behavior-driven_development)) framework for C. You can read more about BDD on www.behaviour-driven.org
+# cspec 
+> Small behavior driven development ([BDD](http://en.wikipedia.org/wiki/Behavior-driven_development)) framework for C.
 
-##A Small Example
+## Show me an example, please!
 
 ```C
 #include <stdio.h>
@@ -11,13 +10,13 @@ CSpec is a small behavior driven development ([BDD](http://en.wikipedia.org/wiki
 
 context (example) {
 
-    describe("Describe the example") {
+    describe("Hello world") {
 
-        it("true should be equal true") {
+        it("true should be true") {
             should_bool(true) be equal to(true);
         } end
 
-        it("true shouldn't be equal to false") {
+        it("true shouldn't be false") {
             should_bool(true) not be equal to(false);
         } end
 
@@ -39,16 +38,16 @@ context (example) {
 
 ```
 
-  Describe the example
-    ✔ true should be equal true
-    ✔ true shouldn't be equal to false
+  Hello world
+    ✔ true should be true
+    ✔ true shouldn't be false
     1) this test will fail because 10 is not equal to 11
     • this test will fail because "Hello" is not "Bye"
 
 
   Summary
 
-    1) Describe the example - this test will fail because 10 is not equal to 11
+    1) Hello world - this test will fail because 10 is not equal to 11
       - Expected <11> but was <10> [./cspecExample.c:18]
 
   2 success
@@ -57,46 +56,36 @@ context (example) {
 
 ```
 
-##Lets get started!
-###¿How do i install it?
+## Let's get started!
+### How do I install it?
 1. `git clone https://github.com/pepita-remembrance/cspec.git`
 1. `cd cspec`
 1. `make`
 1. `sudo make install`
 
-###Now, ¿What should i do?
+### Now, what should I do?
 * Write your C code
-* Test it with this framework, don't forget to compile it with the `-lcspecs` option. For example: `gcc cspecExample.c -o cspecExample -lcspec`
+* Write your specs
+* Compile with the `-l`should`` option. For example: `gcc cspecExample.c -o cspecExample -lcspec`
 * Run it on the console: `./cspecExample`
 
-####¿Are you using Eclipse IDE and it's showing errors all over the project?
-You need to add cspec to the project dependencies.
-In order to do that, follow these steps...
+### What does cspec offer me?
+It offers you a set of operations - like [RSpec](http://rspec.info/), [Mocha](http://visionmedia.github.io/mocha/) or  [Jasmine](http://jasmine.github.io/) - that allows you to make [oriented behavior](http://en.wikipedia.org/wiki/Behavior-driven_development) (unit and integration code) tests.
 
-1. Right click on the project => `Properties`
-1. In the right panel go to `C/C++ Build` => `Settings` => `Tool Settings` => `GCC C++ Linker` => `Libraries`
-1. In the right pannel, above (`Libraries (-l)`), click on `add` and then write `cspecs`
-1. Apply changes
-1. Recompile the project
-
-###¿What does CSpecs offer me?
-It offers you a seto of operations - based on [RSpec](http://rspec.info/) (Ruby), [Mocha](http://visionmedia.github.io/mocha/), [Jasmine](http://jasmine.github.io/) y [Karma](http://karma-runner.github.io/0.12/index.html) (JavaScript) - that allows you to make [oriented behavior](http://en.wikipedia.org/wiki/Behavior-driven_development) (unit and integration code) tests.
-
-##¿How do i use the framework?
+## How do I use the framework?
 
 ###context
-Each behaviour to test must be declared within a context. The syntax to define a context is showed below:
+Each behaviour to test must be declared within a `context`. The syntax to define a `context` is shown below:
 
 ```C
 context(<identifier>) {
     /* You're inside the context */
 }
 ```
-As everything that happens in C, the framework also works in a synchronous way, the code written inside a context is executed sequentially.
-Inside a **context**, you can write functions and call them in your tests, you can also include files (.h), define macros and write scenarios - **describes**.
+Inside a `context`, you can write functions and call them in your tests, you can also include files (.h), define macros and write scenarios using `describe`.
 
 ###describe
-Each scenario is written inside a **describe**, declared in this way:
+Each scenario is written inside a `describe`, declared in this way:
 
 ```C
 describe("Brief description of the scenario") {
@@ -104,11 +93,11 @@ describe("Brief description of the scenario") {
 } end
 ```
 
-Again, inside a **describe** you can write functions and call from your tests, include files (.h), define macros and write the tests - **its**.
+Again, inside a `describe` you can write functions and call them in your tests, include files (.h), define macros and write the tests using `it`.
 
 ###it
 
-Each **it** represents a test.
+Each `it` represents a test.
 
 ```C
 it("Brief description of the test") {
@@ -116,11 +105,11 @@ it("Brief description of the test") {
 } end
 ```
 
-Inside it, you have to write the assertions about the behaviour you want to test. In order to do that CSpecs has a set of basic operations to do that - **shoulds**
+Inside it, you have to write the assertions about the behaviour you want to test. In order to do that cspec has a set of basic operations to do that, the `should` statements.
 
 ###should
 
-Each **should** is an assertion, that expects 2 values. The former is the actual value and the latter, the expected one.
+Each `should` is an assertion, that expects 2 values. The first is the actual value and the second, the expected one.
 
 ```C
 should_bool(<actual_boolean>) be equal to(<expected_boolean>);
@@ -150,7 +139,7 @@ should_ptr(<actual_pointer>) not be equal to(<unexpected_pointer>);
 should_string(<actual_word>) be equal to(<expected_word>);
 should_string(<actual_word>) not be equal to(<unexpected_word>);
 ```
-Also, CSpecs offers [syntactic sugar](http://en.wikipedia.org/wiki/Syntactic_sugar) for some of the assertions, like the following examples:
+Also, cspec offers [syntactic sugar](http://en.wikipedia.org/wiki/Syntactic_sugar) for some of the assertions, like the following examples:
 
 ```C
 should_bool(<actual_boolean>) be truthy;
@@ -165,8 +154,7 @@ should_ptr(<actual_pointer>) not be null;
 
 ###Hooks - before y after
 
-Sometimes the scenarios, initial configurations, or deallocation of the variables get repeated between tests. In order to handle that, inside each **describe**, you can add
-a block code to execute **before** and **after** each test (**it**).
+Sometimes the scenarios, initial configurations, or deallocation of the variables get repeated between tests. In order to handle that, inside each `describe`, you can add a block code to execute `before` and `after` each test (`it`).
 
 ####before
 ```C
@@ -182,8 +170,7 @@ after {
 } end
 ```
 
-**Note:** As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the **before** and **after**
-must be declared in the beggining of the **describe** scenario, even before the first test.
+**Note:** As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the `before` and `after` must be declared in the beggining of the `describe` scenario, even before the first test.
 
 
 ##Now let's see a complete example, with the execution flow
@@ -306,10 +293,15 @@ after 1
 
 ```
 
-###¿How do i uninstall cspec?
-1. go to the cloned project directory.
-1. `make clean`
-1. `sudo make uninstall`
+#### Are you using Eclipse IDE and it's showing errors all over the project?
+You need to add cspec to the project dependencies.
+In order to do that, follow these steps...
+
+1. Right click on the project => `Properties`
+1. In the right panel go to `C/C++ Build` => `Settings` => `Tool Settings` => `GCC C++ Linker` => `Libraries`
+1. In the right pannel, above (`Libraries (-l)`), click on `add` and then write `cspec`
+1. Apply changes
+1. Recompile the project
 
 
 ##License
@@ -317,4 +309,3 @@ after 1
 This framework uses the GPLv3 as license. Fork it and contribute with the project!
 
 ######Thanks!
-
