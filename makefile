@@ -14,7 +14,7 @@ all: release/libcspecs.so
 release/cspecs:
 	mkdir -p release/cspecs/
 
-release/libcspecs.so: release/cspecs/ $(OBJS)
+release/libcspecs.so: release/cspecs $(OBJS)
 	$(CC) -shared -o "release/libcspecs.so" $(OBJS)
 
 release/cspecs/%.o: cspecs/%.c
