@@ -57,13 +57,14 @@ It**  ITS;
     char*   __get_template (Bool neg, String format);
     It*     __it_create    (String description);
     It*     __current_it   ();
-    int     __report       (void);
     Should* __should_create(String error, String file, Int line);
     void    __print_current_it_result();
     void    __print_it_result_detail(It* _it, int failure_count);
     char*   __get_spaces();
     void    __after_execute();
     void    __before_execute();
+    int     __report_spec();
+    int     __report_json();
 
     #define print_description(description, add_desc, spaces_str, separator, type) { \
         char* spaces = __get_spaces();                                              \
@@ -77,7 +78,14 @@ It**  ITS;
 // ---------------------------------------------------------------------------
 
     int main(void) {
-        return __report();
+        return report(SPEC);
+    }
+
+    int report(Report type) {
+        switch(type) {
+            case JSON: { return __report_json(); }
+            default:   { return __report_spec(); }
+        }
     }
 
 // ---------------------------------------------------------------------------
@@ -170,15 +178,15 @@ It**  ITS;
         __should_boolp(file, line, to_s(actual), negated, to_s(expected));
     }
 
-    __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s"    );
-    __should_definition(char  , char  , actual == expected            , "%c"    );
-    __should_definition(short , short , actual == expected            , "%i"    );
-    __should_definition(int   , int   , actual == expected            , "%i"    );
-    __should_definition(long  , long  , actual == expected            , "%l"    );
-    __should_definition(double, double, actual == expected            , "%f"    );
-    __should_definition(float , float , actual == expected            , "%f"    );
-    __should_definition(ptr   , void* , actual == expected            , "%p"    );
-    __should_definition(string, String, strcmp(actual, expected) == 0 , "\"%s\"");
+    __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s");
+    __should_definition(char  , char  , actual == expected            , "%c");
+    __should_definition(short , short , actual == expected            , "%i");
+    __should_definition(int   , int   , actual == expected            , "%i");
+    __should_definition(long  , long  , actual == expected            , "%l");
+    __should_definition(double, double, actual == expected            , "%f");
+    __should_definition(float , float , actual == expected            , "%f");
+    __should_definition(ptr   , void* , actual == expected            , "%p");
+    __should_definition(string, String, strcmp(actual, expected) == 0 , "%s");
 
 // ---------------------------------------------------------------------------
 // ----- PRIVATE -----
@@ -219,7 +227,11 @@ It**  ITS;
         return template;
     }
 
-    int __report(void) {
+    int __report_spec() {
+        puts("");
+        puts("===========");
+        puts("SPEC REPORT");
+        puts("===========");
         puts("\n");
         puts("  " "\x1b[4m" "Summary\n" NO_COLOR);
         int i, failure_count = 0;
@@ -237,6 +249,31 @@ It**  ITS;
         if (failure_count > 0) printf(FAILURE_COLOR "  %d failure\n" NO_COLOR, failure_count);
         if (PENDING_COUNT > 0) printf(PENDING_COLOR "  %d pending\n" NO_COLOR, PENDING_COUNT);
         puts("");
+        return failure_count;
+    }
+
+    int __report_json() {
+        puts("");
+        puts("===========");
+        puts("JSON REPORT");
+        puts("===========");
+        puts("{");
+        puts("  \"examples:\": [");
+        int i, failure_count = 0;
+        for (i = 0; i < IT_COUNT; i++) {
+            It* _it = ITS[i];
+            puts(  "    {");
+            if (_it->is_failure) {
+                printf("      \"result\": \"%s\",\n", _it->shoulds[0]->error);
+                failure_count++;
+            }
+            printf("      \"title\": \"%s, %s\",\n", _it->_describe, _it->description);
+            printf("      \"status\": \"%s\"\n", _it->is_failure ? "failed": "passed");
+            printf("    }%s\n", (i+1) < IT_COUNT ? ",": "");
+            __it_destroy(_it);
+        }
+        puts("  ]");
+        puts("}");
         return failure_count;
     }
 
