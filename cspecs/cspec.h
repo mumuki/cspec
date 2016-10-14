@@ -18,6 +18,10 @@
         typedef bool Bool;
         typedef int Int;
 
+        typedef enum report {
+            SPEC, JSON
+        } Report;
+
     // ---------------------------------------------------------------------------
     // ----- DECLARATION -----
     // ---------------------------------------------------------------------------
@@ -34,6 +38,8 @@
 
         void __after  (Function function);
         void __before (Function function);
+
+        int report(Report);
 
         #define __should_declaration(suffix, type)                                                  \
             void __should_##suffix(String file, Int line, type actual, Bool negated, type expected)
