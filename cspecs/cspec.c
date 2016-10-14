@@ -218,7 +218,7 @@ It**  ITS;
         free(self);
     }
 
-    #define VALUE NO_COLOR "%s" NO_COLOR
+    #define VALUE "%s"
 
     char* __get_template(Bool neg, String format) {
         char* template = malloc(128);
@@ -232,8 +232,8 @@ It**  ITS;
         puts("===========");
         puts("SPEC REPORT");
         puts("===========");
-        puts("\n");
         puts("  " "\x1b[4m" "Summary\n" NO_COLOR);
+        puts("");
         int i, failure_count = 0;
         for (i = 0; i < IT_COUNT; i++) {
             It* _it = ITS[i];
