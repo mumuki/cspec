@@ -258,7 +258,7 @@ It**  ITS;
         puts("JSON REPORT");
         puts("===========");
         puts("{");
-        puts("  \"examples:\": [");
+        puts("  \"examples\": [");
         int i, failure_count = 0;
         for (i = 0; i < IT_COUNT; i++) {
             It* _it = ITS[i];
