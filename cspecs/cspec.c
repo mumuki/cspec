@@ -63,8 +63,8 @@ It**  ITS;
     char*   __get_spaces();
     void    __after_execute();
     void    __before_execute();
-    int __report_spec();
-    int __report_json();
+    int     __report_spec();
+    int     __report_json();
 
     #define print_description(description, add_desc, spaces_str, separator, type) { \
         char* spaces = __get_spaces();                                              \
@@ -228,6 +228,10 @@ It**  ITS;
     }
 
     int __report_spec() {
+        puts("");
+        puts("===========");
+        puts("SPEC REPORT");
+        puts("===========");
         puts("\n");
         puts("  " "\x1b[4m" "Summary\n" NO_COLOR);
         int i, failure_count = 0;
@@ -249,6 +253,10 @@ It**  ITS;
     }
 
     int __report_json() {
+        puts("");
+        puts("===========");
+        puts("JSON REPORT");
+        puts("===========");
         puts("{");
         puts("  \"examples:\": [");
         int i, failure_count = 0;
