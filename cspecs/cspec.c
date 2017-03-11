@@ -173,6 +173,16 @@ It**  ITS;
             }                                                                                       \
         }                                                                                           \
 
+    void __fail(String file, Int line, String reason){
+        It* _it = __current_it();
+        _it->is_failure = true;
+        String template = "Failed because: <%s>";
+        int message_size = fprintf(devNull, template, reason);
+        String error = malloc(message_size + 1);
+        sprintf(error, template, reason);
+        _it->shoulds[SHOULD_COUNT++] = __should_create(error, file, line);
+    }
+
     void __should_bool(String file, Int line, Bool actual, Bool negated, Bool expected) {
         char* to_s(Bool p) { return p ? "true" : "false"; }
         __should_boolp(file, line, to_s(actual), negated, to_s(expected));

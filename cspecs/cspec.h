@@ -39,6 +39,8 @@
         void __after  (Function function);
         void __before (Function function);
 
+        void __fail(String file, Int line, String reason);
+
         int report(Report);
 
         #define __should_declaration(suffix, type)                                                  \
@@ -75,6 +77,7 @@
 
         #define __should_call(suffix, actual)   __should_##suffix(__FILE__, __LINE__, (actual),
 
+        #define fail(reason)                    __fail(__FILE__, __LINE__, reason)
         #define should_bool(actual)             __should_call(bool  , actual)
         #define should_char(actual)             __should_call(char  , actual)
         #define should_short(actual)            __should_call(short , actual)
