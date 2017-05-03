@@ -70,7 +70,7 @@ context (example) {
 * Run it on the console: `./cspecExample`
 
 ### What does cspec offer me?
-It offers you a set of operations - like [RSpec](http://rspec.info/), [Mocha](http://visionmedia.github.io/mocha/) or  [Jasmine](http://jasmine.github.io/) - that allows you to make [oriented behavior](http://en.wikipedia.org/wiki/Behavior-driven_development) (unit and integration code) tests.
+It offers you a set of operations - like [RSpec](http://rspec.info/), [Mocha](http://mochajs.org/) or  [Jasmine](http://jasmine.github.io/) - that allows you to make [oriented behavior](http://en.wikipedia.org/wiki/Behavior-driven_development) (unit and integration code) tests.
 
 ## How do I use the framework?
 
