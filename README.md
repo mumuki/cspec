@@ -74,7 +74,7 @@ It offers you a set of operations - like [RSpec](http://rspec.info/), [Mocha](ht
 
 ## How do I use the framework?
 
-###context
+### context
 Each behaviour to test must be declared within a `context`. The syntax to define a `context` is shown below:
 
 ```C
@@ -84,7 +84,7 @@ context(<identifier>) {
 ```
 Inside a `context`, you can write functions and call them in your tests, you can also include files (.h), define macros and write scenarios using `describe`.
 
-###describe
+### describe
 Each scenario is written inside a `describe`, declared in this way:
 
 ```C
@@ -95,7 +95,7 @@ describe("Brief description of the scenario") {
 
 Again, inside a `describe` you can write functions and call them in your tests, include files (.h), define macros and write the tests using `it`.
 
-###it
+### it
 
 Each `it` represents a test.
 
@@ -107,7 +107,7 @@ it("Brief description of the test") {
 
 Inside it, you have to write the assertions about the behaviour you want to test. In order to do that cspec has a set of basic operations to do that, the `should` statements.
 
-###should
+### should
 
 Each `should` is an assertion, that expects 2 values. The first is the actual value and the second, the expected one.
 
@@ -152,18 +152,18 @@ should_ptr(<actual_pointer>) be null;
 should_ptr(<actual_pointer>) not be null;
 ```
 
-###Hooks - before y after
+### Hooks - before y after
 
 Sometimes the scenarios, initial configurations, or deallocation of the variables get repeated between tests. In order to handle that, inside each `describe`, you can add a block code to execute `before` and `after` each test (`it`).
 
-####before
+#### before
 ```C
 before {
     /* Code to execute before each test */
 } end
 ```
 
-####after
+#### after
 ```C
 after {
     /* Code to execute after each test */
@@ -173,7 +173,7 @@ after {
 **Note:** As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the `before` and `after` must be declared in the beggining of the `describe` scenario, even before the first test.
 
 
-##Now let's see a complete example, with the execution flow
+## Now let's see a complete example, with the execution flow
 
 ```C
 #include <stdio.h>
@@ -304,8 +304,8 @@ In order to do that, follow these steps...
 1. Recompile the project
 
 
-##License
+## License
 
 This framework uses the GPLv3 as license. Fork it and contribute with the project!
 
-######Thanks!
+###### Thanks!
