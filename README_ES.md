@@ -58,14 +58,14 @@ context (ejemplo) {
 
 ##Empecemos!
 ###¿Cómo lo instalo?
-1. `git clone https://github.com/pepita-remembrance/cspec.git`
+1. `git clone https://github.com/mumuki/cspec.git`
 1. `cd cspec`
 1. `make`
 1. `sudo make install`
 
 ###Ahora, ¿qué hago?
 * Escribí el código C que quieras
-* Probalo usando este framework, para eso no te olvides de compilarlo con `-lcspecs`. Por ejemplo: `gcc cspecEjemplo.c -o cspecEjemplo -lcspec`
+* Probalo usando este framework, para eso no te olvides de compilarlo con `-lcspecs`. Por ejemplo: `gcc -lcspec cspecEjemplo.c -o cspecEjemplo`
 * Correlo en la consola: `./cspecEjemplo`
 
 ####¿Estás codificando en eclipse y te muestra errores por todos lados?
