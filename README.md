@@ -58,7 +58,7 @@ context (example) {
 
 ## Let's get started!
 ### How do I install it?
-1. `git clone https://github.com/pepita-remembrance/cspec.git`
+1. `git clone https://github.com/mumuki/cspec.git`
 1. `cd cspec`
 1. `make`
 1. `sudo make install`
@@ -66,7 +66,7 @@ context (example) {
 ### Now, what should I do?
 * Write your C code
 * Write your specs
-* Compile with the `-l`should`` option. For example: `gcc cspecExample.c -o cspecExample -lcspec`
+* Compile with the `-l`should`` option. For example: `gcc -lcspec cspecExample.c -o cspecExample`
 * Run it on the console: `./cspecExample`
 
 ### What does cspec offer me?
