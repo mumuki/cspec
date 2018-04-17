@@ -66,7 +66,7 @@ context (example) {
 ### Now, what should I do?
 * Write your C code
 * Write your specs
-* Compile with the `-l`should`` option. For example: `gcc -lcspec cspecExample.c -o cspecExample`
+* Compile with the `-l`should`` option. For example: `gcc -lcspecs cspecExample.c -o cspecExample`
 * Run it on the console: `./cspecExample`
 
 ### What does cspec offer me?
