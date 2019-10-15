@@ -173,9 +173,9 @@ It**  ITS;
             }                                                                                       \
         }                                                                                           \
 
+    char* __to_s(Bool p) { return p ? "true" : "false"; }
     void __should_bool(String file, Int line, Bool actual, Bool negated, Bool expected) {
-        char* to_s(Bool p) { return p ? "true" : "false"; }
-        __should_boolp(file, line, to_s(actual), negated, to_s(expected));
+        __should_boolp(file, line, __to_s(actual), negated, __to_s(expected));
     }
 
     __should_definition(boolp , String, strcmp(actual, expected) == 0 , "%s");
