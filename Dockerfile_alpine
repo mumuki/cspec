@@ -1,9 +1,9 @@
 FROM alpine:3.7
 
-RUN apk add build-base git vim
+RUN apk add build-base vim
 
-RUN git clone https://github.com/mumuki/cspec.git
+COPY . cspec/
 
-WORKDIR cspec
+WORKDIR cspec/
 
 RUN make && make install
