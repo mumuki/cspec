@@ -1,7 +1,7 @@
- #CSpec 
+# CSpec 
 Mini framework para hacer [BDD](http://en.wikipedia.org/wiki/Behavior-driven_development) en C
 
-##Un pequeño ejemplo
+## Un pequeño ejemplo
 
 ```C
 #include <stdio.h>
@@ -56,19 +56,19 @@ context (ejemplo) {
 
 ```
 
-##Empecemos!
-###¿Cómo lo instalo?
+## Empecemos!
+### ¿Cómo lo instalo?
 1. `git clone https://github.com/mumuki/cspec.git`
 1. `cd cspec`
 1. `make`
 1. `sudo make install`
 
-###Ahora, ¿qué hago?
+### Ahora, ¿qué hago?
 * Escribí el código C que quieras
 * Probalo usando este framework, para eso no te olvides de compilarlo con `-lcspecs`. Por ejemplo: `gcc -lcspec cspecEjemplo.c -o cspecEjemplo`
 * Correlo en la consola: `./cspecEjemplo`
 
-####¿Estás codificando en eclipse y te muestra errores por todos lados?
+#### ¿Estás codificando en eclipse y te muestra errores por todos lados?
 Tenés que agregar cspec a las dependencias del proyecto.
 Para eso...
 
@@ -78,12 +78,12 @@ Para eso...
 1. Aplicá los cambios
 1. Recompilar el proyecto
 
-###¿Qué me ofrece CSpecs?
+### ¿Qué me ofrece CSpecs?
 Me ofrece un conjunto de operaciones - basadas en [RSpec](http://rspec.info/) (Ruby), [Mocha](http://visionmedia.github.io/mocha/), [Jasmine](http://jasmine.github.io/) y [Karma](http://karma-runner.github.io/0.12/index.html) (JavaScript) - que me permiten realizar pruebas (unitarias y de integración del código) [orientadas al comportamiento](http://en.wikipedia.org/wiki/Behavior-driven_development)
 
-##¿Cómo lo uso?
+## ¿Cómo lo uso?
 
-###context
+### context
 Cada comportamiento a testear debe estar dentro de un contexto. La forma de definir un contexto en CSpecs es de esta forma:
 
 ```C
@@ -96,7 +96,7 @@ Cómo todo lo que ocurre en C, y dado que el framework trabaja de forma sincrón
 
 Dentro de un **contexto** puedo escribir funciones y llamarlas desde mis tests, puedo incluir archivos (.h), definir macros y describir escenarios - **describes**.
 
-###describe
+### describe
 Cada escenario se escribe dentro de un **describe**, de esta forma:
 
 ```C
@@ -107,7 +107,7 @@ describe("Breve descripción del escenario") {
 
 Nuevamente, dentro de un **describe** puedo escribir funciones y llamarlas desde mis test, puedo incluir archivos (.h), definir macros y escribir los test - **its**.
 
-###it
+### it
 
 Cada **it** es un test, propiamente dicho.
 
@@ -119,7 +119,7 @@ it("Breve descripción del test") {
 
 Dentro de mismo, debo realizar las aserciones sobre el comportamiento que quiero probar. Para ello, CSpecs, cuenta con operaciones básicas para realizarlas - **shoulds**
 
-###should
+### should
 Cada **should** es una aserción, la cual espera 2 valores. El primero es el que quiero testear contra el segundo, el esperado.
 
 ```C
@@ -164,18 +164,18 @@ should_ptr(<puntero_actual>) be null;
 should_ptr(<puntero_actual>) not be null;
 ```
 
-###Hooks - before y after
+### Hooks - before y after
 
 Hay veces que entre los test se repiten escenarios o configuraciones iniciales y/o se libera la memoria de las mismas variables. Para manejar eso, dentro de cada **describe**, puede agregarse una porcion de código para ejecutar **antes** y **después** de cada **it**
 
-####before
+#### before
 ```C
 before {
     /* codigo para ejecutar antes de cada it */
 } end
 ```
 
-####after
+#### after
 ```C
 after {
     /* codigo para ejecutar después de cada it */
@@ -184,7 +184,7 @@ after {
 
 **Nota:** Tener en cuenta que, como se ha mencionado anteriormente, el describe se ejecuta de forma secuencial, por eso es __muy importante__ recordar que el **before** y **after** deben estar al principio del **describe** (antes del primer **it**)
 
-##Veamos ahora un ejemplo completo, con su respectiva ejecución
+## Veamos ahora un ejemplo completo, con su respectiva ejecución
 
 ```C
 #include <stdio.h>
@@ -305,9 +305,9 @@ after 1
 
 ```
 
-###¿Cómo lo desinstalo?
+### ¿Cómo lo desinstalo?
 1. Ir a la carpeta clonada del repositorio.
 1. `make clean`
 1. `sudo make uninstall`
 
-######Gracias!
+###### Gracias!
