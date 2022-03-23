@@ -14,7 +14,7 @@
     // ---------------------------------------------------------------------------
 
         typedef char* String;
-        typedef void(*Function)(void);
+        typedef void(*Runnable)(void);
         typedef bool Bool;
         typedef int Int;
 
@@ -27,17 +27,17 @@
     // ---------------------------------------------------------------------------
 
         void __describe_pre (String description);
-        void __describe     (String description, Function function);
+        void __describe     (String description, Runnable runnable);
         void __describe_post(String description);
 
         void __it_pre (String description);
-        void __it     (String description, Function function);
+        void __it     (String description, Runnable runnable);
         void __it_post(String description);
 
-        void __skip   (String description, Function function);
+        void __skip   (String description, Runnable runnable);
 
-        void __after  (Function function);
-        void __before (Function function);
+        void __after  (Runnable runnable);
+        void __before (Runnable runnable);
 
         int report(Report);
 

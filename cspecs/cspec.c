@@ -45,8 +45,8 @@ Int DESCRIBE_DEEP_LEVEL = 0;
 
 String CURRENT_DESCRIBE = "";
 
-Function AFTERS[MAX_CHAINS_HOOKS];
-Function BEFORES[MAX_CHAINS_HOOKS];
+Runnable AFTERS[MAX_CHAINS_HOOKS];
+Runnable BEFORES[MAX_CHAINS_HOOKS];
 
 It**  ITS;
 
@@ -101,9 +101,9 @@ It**  ITS;
         print_description(description, "", "", "", DESCRIBE);
     }
 
-    void __describe(String description, Function function) {
+    void __describe(String description, Runnable runnable) {
         __describe_pre(description);
-        function();
+        runnable();
         __describe_post(description);
     }
 
@@ -123,10 +123,10 @@ It**  ITS;
         SHOULD_COUNT = 0;
     }
 
-    void __it(String description, Function function) {
+    void __it(String description, Runnable runnable) {
         __before_execute();
         __it_pre(description);
-        function();
+        runnable();
         __it_post(description);
         __after_execute();
     }
@@ -135,7 +135,7 @@ It**  ITS;
         __print_current_it_result();
     }
 
-    void __skip(String description, Function function) {
+    void __skip(String description, Runnable runnable) {
         PENDING_COUNT++;
         print_description(description, "", "  ", "", PENDING);
     }
@@ -144,12 +144,12 @@ It**  ITS;
 // ----- HOOKS -----
 // ---------------------------------------------------------------------------
 
-    void __before(Function function) {
-        BEFORES[DESCRIBE_DEEP_LEVEL - 1] = function;
+    void __before(Runnable runnable) {
+        BEFORES[DESCRIBE_DEEP_LEVEL - 1] = runnable;
     }
 
-    void __after(Function function) {
-        AFTERS[DESCRIBE_DEEP_LEVEL - 1] = function;
+    void __after(Runnable runnable) {
+        AFTERS[DESCRIBE_DEEP_LEVEL - 1] = runnable;
     }
 
 // ---------------------------------------------------------------------------
@@ -336,4 +336,3 @@ It**  ITS;
             if (AFTERS[i] != NULL)
                 AFTERS[i]();
     }
-
