@@ -172,3 +172,8 @@ NOTE: As stated before, the context and the describe are executed secuentially, 
 
 WARNING: Currently we have a maximum threshold for hooks on each test file, defined in MAX_CHAINS_HOOKS. Current threshold: 64.
 
+## License
+
+This framework uses the GPLv3 as license. Fork it and contribute with the project!
+
+###### Thanks!
