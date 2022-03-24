@@ -146,6 +146,7 @@ should_bool(<actual_boolean>) not be falsey;
 
 should_ptr(<actual_pointer>) be null;
 should_ptr(<actual_pointer>) not be null;
+```
 
 === Hooks - before y after
 
