@@ -91,6 +91,8 @@ Inside it, you have to write the assertions about the behaviour you want to test
 
 Each `should` is an assertion, that expects 2 values. The first is the actual value and the second, the expected one.
 
+WARNING: Currently we have a maximum threshold for assertions on each tests, defined in MAX_SHOULDS_PER_IT. Current threshold: 64.
+
 [source, c]
 ---
 should_bool(<actual_boolean>) be equal to(<expected_boolean>);
@@ -119,24 +121,6 @@ should_ptr(<actual_pointer>) not be equal to(<unexpected_pointer>);
 
 should_string(<actual_word>) be equal to(<expected_word>);
 should_string(<actual_word>) not be equal to(<unexpected_word>);
----
-
-WARNING: Currently we have a maximum threshold for assertions on each tests, defined in MAX_SHOULDS_PER_IT. Current threshold: 64.
-
-==== Syntax Sugar on tests
-
-Also, cspec offers http://en.wikipedia.org/wiki/Syntactic_sugar[syntactic sugar] for some of the assertions, like the following examples:
-
-[source, c]
----
-should_bool(<actual_boolean>) be truthy;
-should_bool(<actual_boolean>) not be truthy;
-
-should_bool(<actual_boolean>) be falsey;
-should_bool(<actual_boolean>) not be falsey;
-
-should_ptr(<actual_pointer>) be null;
-should_ptr(<actual_pointer>) not be null;
 ---
 
 === Hooks - before y after
