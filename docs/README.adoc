@@ -1,3 +1,4 @@
+= CSPEC
 :encoding: utf-8
 :lang: en
 :toc: left
@@ -15,9 +16,7 @@
 :attribute-missing: warn
 :xrefstyle: short
 
-:toc: 
-
-= CSPEC
+:toc:
 
 [quote]
 Small behavior driven development ( http://en.wikipedia.org/wiki/Behavior-driven_development[BDD] ) framework for C.
