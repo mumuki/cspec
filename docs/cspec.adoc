@@ -1,0 +1,167 @@
+:toc: 
+
+= CSPEC
+
+[quote]
+Small behavior driven development ( http://en.wikipedia.org/wiki/Behavior-driven_development[BDD] ) framework for C.
+
+== QuickStart
+
+This is just an small example of how to use CSPEC
+
+[source, c]
+---
+#include <stdio.h>
+#include <stdbool.h>
+#include <cspecs/cspec.h>
+
+context (example) {
+
+    describe("Hello world") {
+
+        it("true should be true") {
+            should_bool(true) be equal to(true);
+        } end
+
+        it("true shouldn't be false") {
+            should_bool(true) not be equal to(false);
+        } end
+
+        it("this test will fail because 10 is not equal to 11") {
+            should_int(10) be equal to(11);
+        } end
+
+        skip("this test will fail because \"Hello\" is not \"Bye\"") {
+            should_string("Hello") be equal to("Bye");
+        } end
+
+    } end
+
+}
+---
+
+== Fucntions
+
+=== Contexts
+
+==== Context
+
+Each behaviour to test must be declared within a `context`. The syntax to define a `context` is shown below:
+
+[source, c]
+---
+context(<identifier>) {
+    /* You're inside the context */
+}
+---
+
+Inside a `context`, you can write functions and call them in your tests, you can also include files (.h), define macros and write scenarios using `describe`.
+
+NOTE: You should always have at the top of your test file, as the first level of nesting, either a `context` or a `describe`. The former is prefered.
+
+==== Describe
+
+Each scenario is written inside a `describe`, declared in this way:
+
+[source, c]
+---
+describe("Brief description of the scenario") {
+    /* Here goes the code */
+} end
+---
+
+We can have multiple scenarios on each context. Again, inside a `describe` you can write functions and call them in your tests, include files (.h), define macros and write the tests using `it`.
+
+=== Tests and Assertions
+
+==== Tests (it)
+
+Each `it` represents a test.
+
+[source, c]
+---
+it("Brief description of the test") {
+    /* Here goes the test code, along with the assertions */
+} end
+---
+
+Inside it, you have to write the assertions about the behaviour you want to test. In order to do that cspec has a set of basic operations to do that, the `should` statements.
+
+=== Assertions (should)
+
+Each `should` is an assertion, that expects 2 values. The first is the actual value and the second, the expected one.
+
+[source, c]
+---
+should_bool(<actual_boolean>) be equal to(<expected_boolean>);
+should_bool(<actual_boolean>) not be equal to(<unexpected_boolean>);
+
+should_char(<caracter_actual>) be equal to(<caracter_esperado>);
+should_char(<caracter_actual>) not be equal to(<caracter_no_esperado>);
+
+should_short(<actual_number>) be equal to(<expected_number>);
+should_short(<actual_number>) not be equal to(<unexpected_number>);
+
+should_int(<actual_number>) be equal to(<expected_number>);
+should_int(<actual_number>) not be equal to(<unexpected_number>);
+
+should_long(<actual_number>) be equal to(<expected_number>);
+should_long(<actual_number>) not be equal to(<unexpected_number>);
+
+should_float(<actual_float>) be equal to(<expected_float>);
+should_float(<actual_float>) not be equal to(<unexpected_float>);
+
+should_double(<decimal_actual>) be equal to(<decimal_esperado>);
+should_double(<decimal_actual>) not be equal to(<decimal_no_esperado>);
+
+should_ptr(<actual_pointer>) be equal to(<expected_pointer>);
+should_ptr(<actual_pointer>) not be equal to(<unexpected_pointer>);
+
+should_string(<actual_word>) be equal to(<expected_word>);
+should_string(<actual_word>) not be equal to(<unexpected_word>);
+---
+
+WARNING: Currently we have a maximum threshold for assertions on each tests, defined in MAX_SHOULDS_PER_IT. Current threshold: 64.
+
+===== Syntax Sugar
+
+Also, cspec offers http://en.wikipedia.org/wiki/Syntactic_sugar[syntactic sugar] for some of the assertions, like the following examples:
+
+[source, c]
+---
+should_bool(<actual_boolean>) be truthy;
+should_bool(<actual_boolean>) not be truthy;
+
+should_bool(<actual_boolean>) be falsey;
+should_bool(<actual_boolean>) not be falsey;
+
+should_ptr(<actual_pointer>) be null;
+should_ptr(<actual_pointer>) not be null;
+---
+
+==== Hooks - before y after
+
+Sometimes the scenarios, initial configurations, or deallocation of the variables get repeated between tests. In order to handle that, inside each `describe`, you can add a block code to execute `before` and `after` each test (`it`).
+
+===== before
+
+[source, c]
+---
+before {
+    /* Code to execute before each test */
+} end
+---
+
+===== after
+
+[source, c]
+---
+after {
+    /* Code to execute after each test */
+} end
+---
+
+NOTE: As stated before, the context and the describe are executed secuentially, that's why it's __very important__ to remember that the `before` and `after` must be declared in the beggining of the `describe` scenario, even before the first test.
+
+WARNING: Currently we have a maximum threshold for hooks on each test file, defined in MAX_CHAINS_HOOKS. Current threshold: 64.
+
