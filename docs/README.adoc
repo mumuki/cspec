@@ -1,3 +1,20 @@
+:encoding: utf-8
+:lang: en
+:toc: left
+:toclevels: 5
+:experimental:
+:icons: font
+:partnums:
+:sectnums:
+:sectlinks:
+:!compat-mode:
+:source-highlighter: rouge
+:imagesdir: images
+:ditaa-shadows: false
+:ditaa-transparent: true
+:attribute-missing: warn
+:xrefstyle: short
+
 :toc: 
 
 = CSPEC
