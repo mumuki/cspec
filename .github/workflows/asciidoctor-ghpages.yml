@@ -27,6 +27,6 @@ jobs:
         asciidoctor_params: --attribute=nofooter
         pdf_build: true
         adoc_file_ext: .adoc # default is .adoc
-        #ebook_main_adoc_file: README
+        ebook_main_adoc_file: README
         # pre_build:
         # post_build:
