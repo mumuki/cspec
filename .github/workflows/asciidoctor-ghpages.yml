@@ -4,9 +4,9 @@ name: asciidoctor-ghpages
 # events but only for the master branch
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +27,8 @@ jobs:
         asciidoctor_params: --attribute=nofooter
         pdf_build: true
         adoc_file_ext: .adoc # default is .adoc
-        source_dir: docs/ # default is .
-        # slides_build: true
+        source_dir: . # default is .
+        slides_build: false
+        ebook_main_adoc_file: README
         # pre_build:
         # post_build:
