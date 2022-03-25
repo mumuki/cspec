@@ -26,7 +26,6 @@ jobs:
       with:
         # asciidoctor_params: --attribute=nofooter
         pdf_build: true
-        # adoc_file_ext: .ascii # default is .adoc
-        ebook_main_adoc_file: README
-        # pre_build:
+        adoc_file_ext: .adoc # default is .adoc
+        pre_build: cp ./docs/README.adoc .
         # post_build:
