@@ -1,4 +1,4 @@
-# CSpec 
+# CSpec
 Mini framework para hacer [BDD](http://en.wikipedia.org/wiki/Behavior-driven_development) en C
 
 ## Un pequeño ejemplo
@@ -59,9 +59,8 @@ context (ejemplo) {
 ## Empecemos!
 ### ¿Cómo lo instalo?
 1. `git clone https://github.com/mumuki/cspec.git`
-1. `cd cspec`
-1. `make`
-1. `sudo make install`
+2. `cd cspec`
+3. `make install`
 
 ### Ahora, ¿qué hago?
 * Escribí el código C que quieras

@@ -1,4 +1,4 @@
-# Cspec [https://mumuki.github.io/cspec/] 
+# CSpec [https://mumuki.github.io/cspec/]
 > Small behavior driven development ([BDD](http://en.wikipedia.org/wiki/Behavior-driven_development)) framework for C.
 
 ## Show me an example, please!
@@ -59,9 +59,8 @@ context (example) {
 ## Let's get started!
 ### How do I install it?
 1. `git clone https://github.com/mumuki/cspec.git`
-1. `cd cspec`
-1. `make`
-1. `sudo make install`
+2. `cd cspec`
+3. `make install`
 
 ### Now, what should I do?
 * Write your C code
