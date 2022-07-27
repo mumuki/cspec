@@ -6,3 +6,5 @@ release
 test.c
 example.c
 cspec.wiki
+/.idea/
+/cmake-build-*/

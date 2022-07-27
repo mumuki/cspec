@@ -6,7 +6,8 @@ set(SOURCE_FILES
         cspecs/cspec.c)
 
 add_library(cspecs SHARED ${SOURCE_FILES})
+set_target_properties(cspecs PROPERTIES PUBLIC_HEADER cspecs/cspec.h)
 
 install(TARGETS cspecs
         LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+        PUBLIC_HEADER DESTINATION include/cspecs)
