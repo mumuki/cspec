@@ -6,6 +6,6 @@ WORKDIR /cspec/
 
 COPY . .
 
-RUN make && make install
+RUN make install
 
 CMD [ "/bin/sh" ]

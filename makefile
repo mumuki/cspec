@@ -8,6 +8,10 @@ OBJS=$(C_SRCS:./%.c=release/%.o)
 
 UNAME=$(shell uname)
 
+ifneq ($(shell id -un),root)
+SUDO=sudo
+endif
+
 # Clean and compile .so
 all: release/libcspecs.so
 
@@ -33,11 +37,11 @@ clean:
 
 install: all
 ifeq ($(UNAME), Darwin)
-	cp release/libcspecs.so /usr/lib
-	ditto $(H_SRCS) /usr/include
+	$(SUDO) cp release/libcspecs.so /usr/lib
+	$(SUDO) ditto $(H_SRCS) /usr/include
 else
-	cp -u release/libcspecs.so /usr/lib
-	cp --parents -u $(H_SRCS) /usr/include
+	$(SUDO) cp -u release/libcspecs.so /usr/lib
+	$(SUDO) cp --parents -u $(H_SRCS) /usr/include
 endif
 
 uninstall:
