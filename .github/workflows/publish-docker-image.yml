@@ -21,6 +21,9 @@ jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
+    # This workflow must run only under mumuki org
+    if: github.repository_owner == 'mumuki'
+
     runs-on: ubuntu-latest
     permissions:
       packages: write
