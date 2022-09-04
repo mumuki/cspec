@@ -21,6 +21,9 @@ jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
+    # This workflow must run only under mumuki org
+    if: github.repository_owner == 'mumuki'
+
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -33,10 +36,12 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
+        if: github.event_name == 'push'
         # This is where you will update the PAT to GITHUB_TOKEN
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image
+        if: github.event_name == 'push'
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
