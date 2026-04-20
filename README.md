@@ -62,6 +62,17 @@ context (example) {
 2. `cd cspec`
 3. `make install`
 
+#### macOS
+The cspec DSL relies on GCC nested functions, which Apple Clang (the default `gcc` on macOS) does not support. Install a real GCC via Homebrew:
+
+```
+brew install gcc
+```
+
+The `makefile` auto-detects the newest `gcc-<version>` installed by Homebrew (e.g. `gcc-13`, `gcc-14`, `gcc-15`, ...). You can also override it explicitly with `make CC=gcc-14`.
+
+When building your own specs on macOS, make sure to invoke the same GCC — for example `gcc-15 cspecExample.c -o cspecExample -lcspecs`.
+
 ### Now, what should I do?
 * Write your C code
 * Write your specs
