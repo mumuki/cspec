@@ -62,6 +62,17 @@ context (ejemplo) {
 2. `cd cspec`
 3. `make install`
 
+#### macOS
+El DSL de cspec usa *nested functions* de GCC, que Apple Clang (el `gcc` por default en macOS) no soporta. Instalá un GCC real con Homebrew:
+
+```
+brew install gcc
+```
+
+El `makefile` detecta automáticamente la última versión de `gcc-<versión>` instalada por Homebrew (por ejemplo `gcc-13`, `gcc-14`, `gcc-15`, ...). También podés forzar uno explícito con `make CC=gcc-14`.
+
+Cuando compiles tus propios specs en macOS, usá el mismo GCC — por ejemplo `gcc-15 cspecEjemplo.c -o cspecEjemplo -lcspecs`.
+
 ### Ahora, ¿qué hago?
 * Escribí el código C que quieras
 * Probalo usando este framework, para eso no te olvides de compilarlo con `-lcspecs`. Por ejemplo: `gcc -lcspec cspecEjemplo.c -o cspecEjemplo`
